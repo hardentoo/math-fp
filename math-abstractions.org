@@ -1,0 +1,192 @@
+#+TITLE:  Monads and other abstractions
+#+AUTHOR: John Wiegley
+#+EMAIL:  johnw@newartisans.com
+#+DATE:   4 Jul 2014
+
+\setbeamertemplate{footline}{}
+\setbeamercolor{postit}{fg=black,bg=yellow}
+
+* Sets
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Sets}
+* Functions
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: fram.
+:END:
+\head{Functions}
+** Homomorphisms
+
+#+begin_src ditaa :file blue.png :cmdline "-s 2.5"
++---------+      +----+--------------------+
+| cBLU    |      |{o} |                    |
+|    +----+----->|    | Rectangle portion  |
+|    |cPNK|      |    |                    |
++----+----+      +----+--------------------+
+
++---------+      +----+-----------+
+| cBLU    |      |{o} |           |
+|    +----+----->|    | SmallerX  |
+|    |cPNK|      |    |           |
++----+----+      +----+-----------+
+#+end_src
+
+#+RESULTS:
+[[file:blue.png]]
+
+** Isomorphisms
+** Endomorphisms
+* Laws
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Laws}
+* Algebras
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Algebras}
+* Algebraic Structures
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Algebraic Structures}
+** Magmas
+** Semigroups
+** Monoids
+** Groups
+* Type Algebras
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Type Algebras}
+* Equational Reasoning
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Equational Reasoning}
+* Quantification
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Quantification}
+* Parametricity
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Parametricity}
+* Curry-Howard Isomorphism
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Curry-Howard Isomorphism}
+* Free objects
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Free objects}
+* Category Theory
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Category Theory}
+* Functors
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Functors}
+* Applicatives
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Applicatives}
+* Monads
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Monads}
+* Free Monads
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Free Monads}
+* Colophon
+
+#+BEAMER_HEADER: \setbeamertemplate{navigation symbols}{}
+#+BEAMER_HEADER: \usepackage{courier}
+#+BEAMER_HEADER: \usepackage{helvet}
+#+BEAMER_HEADER: \usepackage{listings}
+#+BEAMER_HEADER: \lstset{
+#+BEAMER_HEADER:     keywordstyle=\color{blue}
+#+BEAMER_HEADER:   , basicstyle=\ttfamily\small
+#+BEAMER_HEADER:   , commentstyle={}
+#+BEAMER_HEADER:   , columns=fullflexible
+#+BEAMER_HEADER:   , showstringspaces=false
+#+BEAMER_HEADER:   , keepspaces=false
+#+BEAMER_HEADER:   , breaklines=true
+#+BEAMER_HEADER:   }
+
+#+BEAMER_HEADER: \newcommand{\head}[1]{\begin{center}
+#+BEAMER_HEADER: \vspace{13mm}\hspace{-1mm}\Huge{{#1}}
+#+BEAMER_HEADER: \end{center}}
+
+#+BEAMER_HEADER: %create template for block without title
+#+BEAMER_HEADER: \defbeamertemplate{block begin}{notitle}
+#+BEAMER_HEADER: {
+#+BEAMER_HEADER:   \usebeamerfont{block body}%
+#+BEAMER_HEADER:   \begin{beamercolorbox}[colsep*=.75ex,vmode]{block body}%
+#+BEAMER_HEADER:     \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+#+BEAMER_HEADER: }
+
+#+DESCRIPTION: Applying mathematical abstractions to functional programming
+#+KEYWORDS: math monad haskell functional programming
+#+LANGUAGE: en
+
+#+STARTUP: beamer
+#+STARTUP: content fninline hidestars
+
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [presentation,14pt]
+
+#+BEAMER_THEME: [height=16mm] Rochester
+#+BEAMER_COLOR: seahorse
+
+#+OPTIONS:   H:2 toc:nil
+
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+
+#+COLUMNS: %20ITEM %13BEAMER_env(Env) %6BEAMER_envargs(Args) %4BEAMER_col(Col) %7BEAMER_extra(Extra)
