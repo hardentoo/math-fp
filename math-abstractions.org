@@ -3,9 +3,30 @@
 #+EMAIL:  johnw@newartisans.com
 #+DATE:   4 Jul 2014
 
-\setbeamertemplate{footline}{}
-\setbeamercolor{postit}{fg=black,bg=yellow}
+#+DESCRIPTION: Applying mathematical abstractions to functional programming
+#+KEYWORDS: math monad haskell functional programming
+#+LANGUAGE: en
 
+\setbeamertemplate{footline}{}
+\setbeamerfont{block body}{size=\small}
+\setbeamercolor{bgcolor}{fg=white,bg=blue}
+
+* Mathematics
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Mathematics}
+** Meaning
+There isn't any.
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+This is just some notes.
+** Abstraction
+Structures, and relationships between structures.
 * Sets
 ** HEAD
 :PROPERTIES:
@@ -13,6 +34,50 @@
 :BEAMER_env: frame
 :END:
 \head{Sets}
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+What is really interesting is just how much can be done with such a minimal
+amount of structure.
+** ``Stuff''
+A set is a collection of elements.
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_act: <2->
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+type Set a = a -> Bool
+\end{lstlisting}
+#+END_LaTeX
+** Extensional
+Can be defined by stating its elements.
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+\( \{ \ True, False\ \} \)
+** Intensional
+Or by describing them.
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+\( \{ \ x \ |\  x \in \mathbb{N}, even(x)\ \} \)
+** Distinction
+Values can be extensionally equal, but intensionally distinct.
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+\( n ↦ 2 (n + 5) \)
+
+\( n ↦ 2 n + 10 \)
+** Deceptively simple
+With just a basic definition, and seven axioms (we've already seen two!), you
+can generate a good deal of mathematics.
 * Functions
 ** HEAD
 :PROPERTIES:
@@ -20,27 +85,62 @@
 :BEAMER_env: fram.
 :END:
 \head{Functions}
-** Homomorphisms
-
-#+begin_src ditaa :file blue.png :cmdline "-s 2.5"
-+---------+      +----+--------------------+
-| cBLU    |      |{o} |                    |
-|    +----+----->|    | Rectangle portion  |
-|    |cPNK|      |    |                    |
-+----+----+      +----+--------------------+
-
-+---------+      +----+-----------+
-| cBLU    |      |{o} |           |
-|    +----+----->|    | SmallerX  |
-|    |cPNK|      |    |           |
-+----+----+      +----+-----------+
+** As maps
+#+begin_src ditaa :file maps.png :cmdline "-s 2.5"
++-----+   +------+
+| {o} |   | {o}  |
+|  x  |-->| f(x) |
+|  y  |-->| f(y) |
+|  z  |-->| f(z) |
+|     |   |      |
++-----+   +------+
 #+end_src
 
 #+RESULTS:
-[[file:blue.png]]
+[[file:maps.png]]
+** Higher-order functions
+\[ id\ x = x \]
 
-** Isomorphisms
-** Endomorphisms
+\[ (f ∘ g)\ x = f (g(x)) \]
+** Properties of functions
+\[ f : cod → dom \]
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+A powerful concept is to define properties of functions in terms of functions
+and equalities.
+*** Idempotent                                                                     :B_definition:
+:PROPERTIES:
+:BEAMER_act: <2->
+:BEAMER_env: definition
+:END:
+\( f ∘ f = f \)
+*** Involutive                                                                     :B_definition:
+:PROPERTIES:
+:BEAMER_act: <3->
+:BEAMER_env: definition
+:END:
+\( f ∘ f = id \)
+** Homomorphism
+``Structure preserving.''
+** Isomorphism
+An isomorphism is a pair of functions satisfying two equations:
+
+\[ f ∘ g = id_{dom(f)} \]
+\[ g ∘ f = id_{dom(g)} \]
+** Isomorphism
+In terms of the types involved:
+
+\[ A ≅ B \]
+
+\[ g : A → B \]
+\[ f : B → A \]
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Assuming of course \( dom(f) = A, dom(g) = B \).
 * Laws
 ** HEAD
 :PROPERTIES:
@@ -87,6 +187,22 @@
 :BEAMER_env: frame
 :END:
 \head{Quantification}
+** Existential
+\[ \exists p, P(p) \]
+** Universal
+\[ \forall p, P(p) \]
+** Universal
+*** True?                                                                          :B_alertblock:
+:PROPERTIES:
+:BEAMER_env: alertblock
+:END:
+\forall x, \exists y \rightarrow x = y
+** Universal
+*** True?                                                                          :B_alertblock:
+:PROPERTIES:
+:BEAMER_env: alertblock
+:END:
+\forall x, \exists y \rightarrow x \neq y
 * Parametricity
 ** HEAD
 :PROPERTIES:
@@ -145,10 +261,26 @@
 \head{Free Monads}
 * Colophon
 
+#+STARTUP: beamer
+#+STARTUP: content fninline hidestars
+
+#+LaTeX_CLASS: beamer
+#+LaTeX_CLASS_OPTIONS: [utf8x,notes,17pt]
+
+#+BEAMER_THEME: [height=16mm] Rochester
+#+BEAMER_COLOR: seahorse
+
+#+OPTIONS:   H:2 toc:nil
+
 #+BEAMER_HEADER: \setbeamertemplate{navigation symbols}{}
 #+BEAMER_HEADER: \usepackage{courier}
 #+BEAMER_HEADER: \usepackage{helvet}
 #+BEAMER_HEADER: \usepackage{listings}
+#+BEAMER_HEADER: \usepackage{pdfcomment}
+
+#+BEAMER_HEADER: \SetUnicodeOption{mathletters}
+#+BEAMER_HEADER: \DeclareUnicodeCharacter{952}{\theta}
+
 #+BEAMER_HEADER: \lstset{
 #+BEAMER_HEADER:     keywordstyle=\color{blue}
 #+BEAMER_HEADER:   , basicstyle=\ttfamily\small
@@ -163,28 +295,7 @@
 #+BEAMER_HEADER: \vspace{13mm}\hspace{-1mm}\Huge{{#1}}
 #+BEAMER_HEADER: \end{center}}
 
-#+BEAMER_HEADER: %create template for block without title
-#+BEAMER_HEADER: \defbeamertemplate{block begin}{notitle}
-#+BEAMER_HEADER: {
-#+BEAMER_HEADER:   \usebeamerfont{block body}%
-#+BEAMER_HEADER:   \begin{beamercolorbox}[colsep*=.75ex,vmode]{block body}%
-#+BEAMER_HEADER:     \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
-#+BEAMER_HEADER: }
-
-#+DESCRIPTION: Applying mathematical abstractions to functional programming
-#+KEYWORDS: math monad haskell functional programming
-#+LANGUAGE: en
-
-#+STARTUP: beamer
-#+STARTUP: content fninline hidestars
-
-#+LaTeX_CLASS: beamer
-#+LaTeX_CLASS_OPTIONS: [presentation,14pt]
-
-#+BEAMER_THEME: [height=16mm] Rochester
-#+BEAMER_COLOR: seahorse
-
-#+OPTIONS:   H:2 toc:nil
+#+BEAMER_HEADER: \renewcommand{\note}[1]{\marginnote{\pdfcomment[icon=note]{#1}}}
 
 #+SELECT_TAGS: export
 #+EXCLUDE_TAGS: noexport
