@@ -1,0 +1,9 @@
+** Universe of programs
+The set of all possible programs:
+
+\[ \{ right, wrong \} \]
+- Those that behave correctly.
+- Those that behave incorrectly.
+** Spectrum of possibility
+- The most liberal languages let us write any possible program.
+- The most restrictive allow only right programs---but usually a subset.

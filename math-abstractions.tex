@@ -1,4 +1,4 @@
-% Created 2014-07-09 Wed 03:46
+% Created 2014-07-09 Wed 05:08
 \documentclass[utf8x,notes,17pt]{beamer}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -29,7 +29,7 @@ keywordstyle=\color{blue}
 , commentstyle={}
 , columns=fullflexible
 , showstringspaces=false
-, keepspaces=false
+, keepspaces=true
 , breaklines=true
 }
 \newcommand{\head}[1]{\begin{center}
@@ -101,8 +101,8 @@ Values can be extensionally equal, but intensionally distinct.
 \end{example}
 \end{frame}
 \begin{frame}[fragile,label=sec-2-6]{Deceptively simple}
-With just a definition of sets, and seven axioms (and we've already seen
-two!), you can generate a good part of mathematics.
+With just a basic definition, and seven axioms (we've already seen two!), you
+can generate a good deal of mathematics.
 \end{frame}
 \section{Functions}
 \label{sec-3}
@@ -152,6 +152,19 @@ Assuming of course \( dom(f) = A, dom(g) = B \).}
 \label{sec-4}
 \begin{frame}[fragile,plain,label=sec-4-1]{HEAD}
 \head{Laws}
+\end{frame}
+\begin{frame}[fragile,label=sec-4-2]{Imposing structure}
+In the absence of meaning, laws create structure.
+\end{frame}
+\begin{frame}[fragile,label=sec-4-3]{Principled restriction}
+Laws restrict how functions and values relate to each other.
+\begin{example}<2->[\vspace*{-3.5ex}]%x
+\begin{lstlisting}[language=Haskell]
+class Monoid a where
+    mempty  :: a
+    mappend :: a -> a -> a
+\end{lstlisting}
+\end{example}
 \end{frame}
 \section{Algebras}
 \label{sec-5}

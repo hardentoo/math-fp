@@ -148,6 +148,22 @@ Assuming of course \( dom(f) = A, dom(g) = B \).
 :BEAMER_env: frame
 :END:
 \head{Laws}
+** Imposed structure
+In the absence of meaning, laws create structure.
+** Principled restriction
+Laws restrict how functions and values relate to each other.
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_act: <2->
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+class Monoid a where
+    mempty  :: a
+    mappend :: a -> a -> a
+\end{lstlisting}
+#+END_LaTeX
 * Algebras
 ** HEAD
 :PROPERTIES:
@@ -287,7 +303,7 @@ Assuming of course \( dom(f) = A, dom(g) = B \).
 #+BEAMER_HEADER:   , commentstyle={}
 #+BEAMER_HEADER:   , columns=fullflexible
 #+BEAMER_HEADER:   , showstringspaces=false
-#+BEAMER_HEADER:   , keepspaces=false
+#+BEAMER_HEADER:   , keepspaces=true=
 #+BEAMER_HEADER:   , breaklines=true
 #+BEAMER_HEADER:   }
 
