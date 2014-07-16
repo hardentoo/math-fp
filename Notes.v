@@ -1,3 +1,5 @@
+(** An example proof of the [universal] theorem. *)
+
 Theorem universal : forall {X} (x : X), exists y, x = y.
 Proof.
   intros. exists x. reflexivity.

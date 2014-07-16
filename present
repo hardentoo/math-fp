@@ -1,2 +1,0 @@
-#!/bin/bash
-/usr/bin/python /Applications/Misc/Présentation.app/Contents/MacOS/presentation.py math-abstractions.pdf

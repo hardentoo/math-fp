@@ -72,9 +72,9 @@ Values can be extensionally equal, but intensionally distinct.
 :PROPERTIES:
 :BEAMER_env: example
 :END:
-\( n ↦ 2 (n + 5) \)
+\( n \mapsto 2 (n + 5) \)
 
-\( n ↦ 2 n + 10 \)
+\( n \mapsto 2 n + 10 \)
 ** Deceptively simple
 With just a basic definition, and seven axioms (we've already seen two!), you
 can generate a good deal of mathematics.
@@ -89,7 +89,7 @@ can generate a good deal of mathematics.
 :PROPERTIES:
 :BEAMER_act: <1>
 :END:
-#+begin_src ditaa :file maps.png :cmdline "-s 2.5"
+#+begin_src ditaa :file images/maps.png :cmdline "-s 2.5"
 +-----+   +------+
 | {o} |   | {o}  |
 |  x  |-->| f(x) |
@@ -100,9 +100,9 @@ can generate a good deal of mathematics.
 #+end_src
 
 #+RESULTS:
-[[file:maps.png]]
+[[file:images/maps.png]]
 ** Domain, range, image
-[[file:Codomain2.png]]
+[[file:images/Codomain2.png]]
 ** Higher-order functions
 \[ id\ x = x \]
 
