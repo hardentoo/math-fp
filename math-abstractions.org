@@ -86,6 +86,9 @@ can generate a good deal of mathematics.
 :END:
 \head{Functions}
 ** As maps
+:PROPERTIES:
+:BEAMER_act: <1>
+:END:
 #+begin_src ditaa :file maps.png :cmdline "-s 2.5"
 +-----+   +------+
 | {o} |   | {o}  |
@@ -98,12 +101,14 @@ can generate a good deal of mathematics.
 
 #+RESULTS:
 [[file:maps.png]]
+** Domain, range, image
+[[file:Codomain2.png]]
 ** Higher-order functions
 \[ id\ x = x \]
 
 \[ (f ∘ g)\ x = f (g(x)) \]
 ** Properties of functions
-\[ f : cod → dom \]
+\[ f : dom → cod \]
 *** note                                                                                 :B_note:
 :PROPERTIES:
 :BEAMER_env: note
@@ -127,8 +132,8 @@ and equalities.
 ** Isomorphism
 An isomorphism is a pair of functions satisfying two equations:
 
-\[ f ∘ g = id_{dom(f)} \]
-\[ g ∘ f = id_{dom(g)} \]
+\[ f ∘ g = id_{cod(f)} \]
+\[ g ∘ f = id_{cod(g)} \]
 ** Isomorphism
 In terms of the types involved:
 
@@ -140,7 +145,7 @@ In terms of the types involved:
 :PROPERTIES:
 :BEAMER_env: note
 :END:
-Assuming of course \( dom(f) = A, dom(g) = B \).
+Assuming of course \( cod(f) = A, cod(g) = B \).
 * Laws
 ** HEAD
 :PROPERTIES:
