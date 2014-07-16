@@ -6,7 +6,7 @@ PDF = math-abstractions.pdf
 
 IMAGES = images/Codomain2.png
 
-all: $(IMAGES) Makefile.coq $(PDF)
+all: $(PDF) Makefile.coq html
 	make -f Makefile.coq
 
 open: $(PDF)
@@ -15,7 +15,7 @@ open: $(PDF)
 present: all
 	$(PYTHON) $(PRESENT) $(PDF)
 
-html:
+html: Makefile.coq
 	make -f Makefile.coq html
 
 Makefile.coq: *.v
@@ -25,7 +25,7 @@ Makefile.coq: *.v
 images/%.png: images/%.svg
 	rsvg-convert -f png -w 800 -h 600  -o $@ $<
 
-%.tex: %.org
+%.tex: %.org $(IMAGES)
 	emacs -batch -L ~/.emacs.d \
 	    -l init -l settings -l org-settings -l ox-beamer \
 	    --eval="(progn (find-file \"$<\") (org-beamer-export-to-latex))"
