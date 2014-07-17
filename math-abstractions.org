@@ -85,24 +85,8 @@ can generate a good deal of mathematics.
 :BEAMER_env: fram.
 :END:
 \head{Functions}
-** As maps
-:PROPERTIES:
-:BEAMER_act: <1>
-:END:
-#+begin_src ditaa :file images/maps.png :cmdline "-s 2.5"
-+-----+   +------+
-| {o} |   | {o}  |
-|  x  |-->| f(x) |
-|  y  |-->| f(y) |
-|  z  |-->| f(z) |
-|     |   |      |
-+-----+   +------+
-#+end_src
-
-#+RESULTS:
-[[file:images/maps.png]]
-** Domain, range, image
-[[file:images/Codomain2.png]]
+** Domain, co-domain, range
+[[file:images/Codomain2.pdf]]
 ** Higher-order functions
 \[ id\ x = x \]
 
@@ -127,6 +111,9 @@ and equalities.
 :BEAMER_env: definition
 :END:
 \( f ∘ f = id \)
+*** Injective
+*** Surjective
+*** Bijective
 ** Homomorphism
 ``Structure preserving.''
 ** Isomorphism
@@ -259,6 +246,19 @@ class Monoid a where
 :BEAMER_env: frame
 :END:
 \head{Functors}
+** Deceptively simple
+** Not containers!
+A *Functor* sometimes maps to:
+- a container
+- a computation
+- a type-in-context
+\dots{}but a *Functor* /per se/ is none of these.
+** Categorical model
+[[file:images/Functors1.pdf]]
+** String diagram
+[[file:images/Functors2.pdf]]
+** Unit mapping
+[[file:images/Functors3.pdf]]
 * Applicatives
 ** HEAD
 :PROPERTIES:

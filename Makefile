@@ -4,9 +4,9 @@ PRESENT = /Applications/Misc/Présentation.app/Contents/MacOS/presentation.py
 
 PDF = math-abstractions.pdf
 
-IMAGES = images/Codomain2.png
+IMAGES = images/Codomain2.pdf
 
-all: $(PDF) Makefile.coq html
+all: $(IMAGES) $(PDF) Makefile.coq html
 	make -f Makefile.coq
 
 open: $(PDF)
@@ -23,9 +23,12 @@ Makefile.coq: *.v
 	sed -i '149,150d' Makefile.coq
 
 images/%.png: images/%.svg
-	rsvg-convert -f png -w 800 -h 600  -o $@ $<
+	rsvg-convert -f png -w 800 -h 600 -o $@ $<
 
-%.tex: %.org $(IMAGES)
+images/%.pdf: images/%.svg
+	rsvg-convert -f pdf -o $@ $<
+
+%.tex: %.org
 	emacs -batch -L ~/.emacs.d \
 	    -l init -l settings -l org-settings -l ox-beamer \
 	    --eval="(progn (find-file \"$<\") (org-beamer-export-to-latex))"
