@@ -9,6 +9,8 @@
 
 \setbeamertemplate{footline}{}
 \setbeamerfont{block body}{size=\small}
+\definecolor{orchid}{RGB}{134, 134, 220}
+\setbeamercolor{block title}{fg=white,bg=orchid}
 \setbeamercolor{bgcolor}{fg=white,bg=blue}
 
 * Mathematics
@@ -94,9 +96,17 @@ good deal of mathematics.
 ** Bijective
 [[file:images/Mappings3.pdf]]
 ** Higher-order functions
-\[ id\ x = x \]
-
-\[ (f ∘ g)\ x = f (g(x)) \]
+*** Identity                                                                       :B_definition:
+:PROPERTIES:
+:BEAMER_env: definition
+:END:
+\( id\ x = x \)
+*** Composition                                                                    :B_definition:
+:PROPERTIES:
+:BEAMER_act: <2->
+:BEAMER_env: definition
+:END:
+\( (f ∘ g)\ x = f (g(x)) \)
 ** Properties of functions
 \[ f : dom → cod \]
 *** note                                                                                 :B_note:
@@ -117,8 +127,23 @@ and equalities.
 :BEAMER_env: definition
 :END:
 \( f ∘ f = id \)
-** Homomorphism
-``Structure preserving.''
+** More properties
+*** Section                                                                        :B_definition:
+:PROPERTIES:
+:BEAMER_env: definition
+:END:
+\( f ∘ s = id \)
+*** Retract                                                                        :B_definition:
+:PROPERTIES:
+:BEAMER_env: definition
+:END:
+\( r ∘ f = id \)
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+I only mention these to show how much structures we can infer from a very
+small set of building blocks.
 ** Isomorphism
 An isomorphism is a pair of functions satisfying two equations:
 
@@ -177,6 +202,8 @@ class Monoid a where
 ** Semigroups
 ** Monoids
 ** Groups
+** Homomorphism
+``Structure preserving.''
 * Type Algebras
 ** HEAD
 :PROPERTIES:
@@ -271,12 +298,12 @@ required categories.
 :END:
 In Haskell, this is called Const.
 ** Functor laws
-*** Functor Law 1                                                                  :B_definition:
+*** 1. Identity law                                                                :B_definition:
 :PROPERTIES:
 :BEAMER_env: definition
 :END:
 \( id = fmap\ id \)
-*** Functor Law 2                                                                  :B_definition:
+*** 2. Composition law                                                             :B_definition:
 :PROPERTIES:
 :BEAMER_act: <2->
 :BEAMER_env: definition
@@ -286,8 +313,9 @@ In Haskell, this is called Const.
 A *Functor* sometimes maps to:
 - a container
 - a computation
-- a type-in-context
-\dots{}but a *Functor* /per se/ is none of these.
+\dots{}but a *Functor* /per se/ is neither.
+** As Context
+\head{\( \textbf{F}\ {\tt a} \)}
 ** Don't be fooled
 *Functors* are humble, but powerful.
 ** Identity                                                                           :B_example:
@@ -309,31 +337,43 @@ instance Functor Identity where
 Identity as a concept can be used to implement "taintedness", to force
 laziness, to provide singletons, and more.  As should be clear by now, the
 simplicity of a core idea can be misleading.
+** Identity                                                                           :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data Identity a = Identity a
+
+instance Functor Identity where
+    fmap f (Identity x) = Identity (f x)
+\end{lstlisting}
+#+END_LaTeX
 ** Proving Identity Law
 \fontsize{12}{16}\selectfont
 \begin{align*}
-id\ {\tt x}             &= fmap\ id\ {\tt x}                      \\
-                        &                                         \\
-id\ ({\tt Identity\ x}) &= fmap\ id\ ({\tt Identity\ x})
-                           \tag*{\textbf{unfold {\tt x}}}         \\
-                        &= {\tt Identity}\ (id\ {\tt x})
-                           \tag*{\textbf{defn. {\tt fmap}}}       \\
-{\tt Identity\ x}       &= {\tt Identity\ x}
-                           \tag*{\textbf{defn. {\tt id}}}
+id\ {\tt x}              &= fmap\ id\ {\tt x}                      \\
+                         &                                         \\
+id\ ({\tt Identity\ x′}) &= fmap\ id\ ({\tt Identity\ x′})
+                            \tag*{\textbf{unfold {\tt x}}}         \\
+                         &= {\tt Identity}\ (id\ {\tt x′})
+                            \tag*{\textbf{defn. {\tt fmap}}}       \\
+{\tt Identity\ x′}       &= {\tt Identity\ x′}
+                            \tag*{\textbf{defn. {\tt id}}}
 \end{align*}
 ** Proving Composition
 \fontsize{12}{16}\selectfont
 \begin{align*}
  &  \hspace{1.3em}fmap\ (f ∘ g)\ {\tt x}             \\
- &= fmap\ (f ∘ g)\ ({\tt Identity\ x})
+ &= fmap\ (f ∘ g)\ ({\tt Identity\ x′})
     \tag*{\textbf{unfold {\tt x}}}                   \\
- &= {\tt Identity}\ ((f ∘ g)\ {\tt x})
+ &= {\tt Identity}\ ((f ∘ g)\ {\tt x′})
     \tag*{\textbf{defn. {\tt fmap}}}                 \\
- &= {\tt Identity}\ (f (g ({\tt x})))
+ &= {\tt Identity}\ (f (g ({\tt x′})))
     \tag*{\textbf{defn. ∘}}                          \\
- &= fmap\ f\ ({\tt Identity} (g ({\tt x})))
+ &= fmap\ f\ ({\tt Identity} (g ({\tt x′})))
     \tag*{\textbf{defn. {\tt fmap}}}                 \\
- &= fmap\ f\ (fmap\ g\ ({\tt Identity\ x}))
+ &= fmap\ f\ (fmap\ g\ ({\tt Identity\ x′}))
     \tag*{\textbf{defn. {\tt fmap}}}                 \\
  &= fmap\ f\ (fmap\ g\ {\tt x})
     \tag*{\textbf{fold {\tt x}}}
@@ -349,6 +389,19 @@ data Maybe a = Nothing | Just a
 instance Functor Maybe where
     fmap f Nothing  = ?
     fmap f (Just x) = ?
+\end{lstlisting}
+#+END_LaTeX
+** Maybe                                                                              :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data Maybe a = Nothing | Just a
+
+instance Functor Maybe where
+    fmap f Nothing  = Nothing
+    fmap f (Just x) = Just (f x)
 \end{lstlisting}
 #+END_LaTeX
 ** Either                                                                             :B_example:
@@ -386,29 +439,32 @@ data Const c a = Const c
 :END:
 \head{Applicatives}
 ** Applicative laws
-*** 1. Identity Law                                                                :B_definition:
+*** 1. Identity law                                                                :B_definition:
 :PROPERTIES:
 :BEAMER_env: definition
 :END:
 \( pure\ id ⊗ v = v \)
-*** 2. Composition Law                                                             :B_definition:
+*** 2. Composition law                                                             :B_definition:
 :PROPERTIES:
+:BEAMER_act: <2->
 :BEAMER_env: definition
 :END:
 \( pure\ (∘) ⊗ u ⊗ v ⊗ w = u ⊗ (v ⊗ w) \)
-*** 3. Homomorphism Law                                                            :B_definition:
+*** 3. Homomorphism law                                                            :B_definition:
 :PROPERTIES:
+:BEAMER_act: <3->
 :BEAMER_env: definition
 :END:
 \( pure\ f ⊗ pure\ x = pure\ (f(x)) \)
 ** Applicative laws
-*** 4. Interchange Law                                                             :B_definition:
+*** 4. Interchange law                                                             :B_definition:
 :PROPERTIES:
 :BEAMER_env: definition
 :END:
 \( u ⊗ pure\ y = pure\ (\$\ y) ⊗ u \)
-*** 5. Functor Relation Law                                                        :B_definition:
+*** 5. Functor relation law                                                        :B_definition:
 :PROPERTIES:
+:BEAMER_act: <2->
 :BEAMER_env: definition
 :END:
 \( fmap\ f\ x = pure\ f ⊗ x \)
@@ -423,6 +479,19 @@ data Identity a = Identity a
 instance Applicative Identity where
     pure x = Identity x
     Identity f <*> Identity x = ?
+\end{lstlisting}
+#+END_LaTeX
+** Identity                                                                           :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data Identity a = Identity a
+
+instance Applicative Identity where
+    pure x = Identity x
+    Identity f <*> Identity x = Identity (f x)
 \end{lstlisting}
 #+END_LaTeX
 ** Proving Identity
@@ -459,9 +528,28 @@ instance Applicative Identity where
 \begin{lstlisting}[language=Haskell]
 data Maybe a = Nothing | Just a
 
-instance Functor Maybe where
-    fmap f Nothing  = ?
-    fmap f (Just x) = ?
+instance Applicative Maybe where
+    pure x = ?
+
+    Nothing <*> Nothing = ?
+    Just f  <*> Nothing = ?
+    Nothing <*> Just x  = ?
+    Just f  <*> Just x  = ?
+\end{lstlisting}
+#+END_LaTeX
+** Maybe                                                                              :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data Maybe a = Nothing | Just a
+
+instance Applicative Maybe where
+    pure x = ?
+
+    Just f <*> Just x = Just (f x)
+    _      <*> _      = Nothing
 \end{lstlisting}
 #+END_LaTeX
 ** Either                                                                             :B_example:
@@ -486,9 +574,16 @@ data Pair p a = Pair p a
 :PROPERTIES:
 :BEAMER_env: example
 :END:
+**Const** requires a trickier instance.
+\vspace{1.5ex}
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
 data Const c a = Const c
+
+instance Monoid c
+    => Applicative (Const c) where
+    pure x = ?
+    Const a <*> Const b = ?
 \end{lstlisting}
 #+END_LaTeX
 * Monads
@@ -498,6 +593,59 @@ data Const c a = Const c
 :BEAMER_env: frame
 :END:
 \head{Monads}
+** Two formulations
+*** Using bind                                                                     :B_definition:
+:PROPERTIES:
+:BEAMER_env: definition
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+return :: m a
+(>>=)  :: m a -> (a -> m b) -> m b
+\end{lstlisting}
+#+END_LaTeX
+*** Using join                                                                     :B_definition:
+:PROPERTIES:
+:BEAMER_act: <2->
+:BEAMER_env: definition
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+return :: m a
+join   :: m (m a) -> m a
+\end{lstlisting}
+#+END_LaTeX
+** Bind in terms of join                                                           :B_definition:
+:PROPERTIES:
+:BEAMER_env: definition
+:END:
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+m >>= f = join (fmap f m)
+\end{lstlisting}
+#+END_LaTeX
+** Monad laws
+*** 1. Left identity law                                                           :B_definition:
+:PROPERTIES:
+:BEAMER_env: definition
+:END:
+\( return\ a >>= f = f a \)
+*** 2. Right identity Law                                                          :B_definition:
+:PROPERTIES:
+:BEAMER_act: <2->
+:BEAMER_env: definition
+:END:
+\( m >>= return = m \)
+*** 3. Associativity Law                                                           :B_definition:
+:PROPERTIES:
+:BEAMER_act: <3->
+:BEAMER_env: definition
+:END:
+\( (m >>= f) >>= g = m >>= (λx → f\ x >>= g) \)
 ** Identity                                                                           :B_example:
 :PROPERTIES:
 :BEAMER_env: example
@@ -507,7 +655,7 @@ data Const c a = Const c
 data Identity a = Identity a
 
 instance Functor Identity where
-    fmap f (Identity x) = ?
+    Identity m >>= f = ?
 \end{lstlisting}
 #+END_LaTeX
 *** note                                                                                 :B_note:
@@ -517,34 +665,54 @@ instance Functor Identity where
 Identity as a concept can be used to implement "taintedness", to force
 laziness, to provide singletons, and more.  As should be clear by now, the
 simplicity of a core idea can be misleading.
-** Proving Identity (Law 1)
+** Identity                                                                           :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data Identity a = Identity a
+
+instance Functor Identity where
+    Identity m >>= f = f m
+\end{lstlisting}
+#+END_LaTeX
+** Proving Left Identity
 \fontsize{12}{16}\selectfont
 \begin{align*}
-id\ {\tt x}             &= fmap\ id\ {\tt x}                      \\
-                        &                                         \\
-id\ ({\tt Identity\ x}) &= fmap\ id\ ({\tt Identity\ x})
-                           \tag*{\textbf{unfold {\tt x}}}         \\
-                        &= {\tt Identity}\ (id\ {\tt x})
-                           \tag*{\textbf{defn. {\tt fmap}}}       \\
-{\tt Identity\ x}       &= {\tt Identity\ x}
-                           \tag*{\textbf{defn. {\tt id}}}
+ &  \hspace{1.3em}return\ {\tt a} >>= f              \\
+ &= {\tt Identity\ a} >>= f
+    \tag*{\textbf{defn. {\tt return}}}               \\
+ &= f\ {\tt a}
+    \tag*{\textbf{defn. {\tt >>=}}}
 \end{align*}
-** Proving Homomorphism (Law 3)
+** Proving Right Identity
 \fontsize{12}{16}\selectfont
 \begin{align*}
- &  fmap\ (f ∘ g)\ {\tt x}                           \\
- &= fmap\ (f ∘ g)\ ({\tt Identity\ x})
-    \tag*{\textbf{unfold {\tt x}}}                   \\
- &= {\tt Identity}\ ((f ∘ g)\ {\tt x})
-    \tag*{\textbf{defn. {\tt fmap}}}                 \\
- &= {\tt Identity}\ (f (g ({\tt x})))
-    \tag*{\textbf{defn. ∘}}                          \\
- &= fmap\ f\ ({\tt Identity} (g ({\tt x})))
-    \tag*{\textbf{defn. {\tt fmap}}}                 \\
- &= fmap\ f\ (fmap\ g\ ({\tt Identity\ x}))
-    \tag*{\textbf{defn. {\tt fmap}}}                 \\
- &= fmap\ f\ (fmap\ g\ {\tt x})
-    \tag*{\textbf{fold {\tt x}}}
+ &  \hspace{1.3em}{\tt m} >>= return                 \\
+ &= {\tt Identity\ m′} >>= return
+    \tag*{\textbf{unfold {\tt m}}}                   \\
+ &= return\ {\tt m′}
+    \tag*{\textbf{defn. {\tt >>=}}}                  \\
+ &= {\tt Identity\ m′}
+    \tag*{\textbf{defn. {\tt return}}}               \\
+ &= {\tt m}
+    \tag*{\textbf{fold {\tt m}}}
+\end{align*}
+** Proving Associativity
+\fontsize{12}{16}\selectfont
+\begin{align*}
+ &  \hspace{1.3em}(m >>= f) >>= g                    \\
+ &= ({\tt Identity\ m′} >>= f) >>= g
+    \tag*{\textbf{unfold {\tt m}}}                   \\
+ &= f\ {\tt m′} >>= g
+    \tag*{\textbf{defn. {\tt >>=}}}                  \\
+ &= (λx → f\ x >>= g)\ {\tt m′}
+    \tag*{\textbf{η-expansion}}                      \\
+ &= {\tt Identity\ m′} >>= (\textbackslash x → f\ x >>= g)
+    \tag*{\textbf{defn. {\tt >>=}}}                  \\
+ &= m >>= (λx → f\ x >>= g)
+    \tag*{\textbf{fold {\tt m}}}
 \end{align*}
 ** Maybe                                                                              :B_example:
 :PROPERTIES:
@@ -555,8 +723,21 @@ id\ ({\tt Identity\ x}) &= fmap\ id\ ({\tt Identity\ x})
 data Maybe a = Nothing | Just a
 
 instance Functor Maybe where
-    fmap f Nothing  = ?
-    fmap f (Just x) = ?
+    Nothing >>= f = ?
+    Just x  >>= f = ?
+\end{lstlisting}
+#+END_LaTeX
+** Maybe                                                                              :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data Maybe a = Nothing | Just a
+
+instance Functor Maybe where
+    Nothing >>= f = Nothing
+    Just x  >>= f = Just (f x)
 \end{lstlisting}
 #+END_LaTeX
 ** Either                                                                             :B_example:
@@ -581,11 +762,7 @@ data Pair p a = Pair p a
 :PROPERTIES:
 :BEAMER_env: example
 :END:
-#+BEGIN_LaTeX
-\begin{lstlisting}[language=Haskell]
-data Const c a = Const c
-\end{lstlisting}
-#+END_LaTeX
+Why can't it be a monad?
 * Free Monads
 ** HEAD
 :PROPERTIES:
