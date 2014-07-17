@@ -76,8 +76,8 @@ Values can be extensionally equal, but intensionally distinct.
 
 \( n \mapsto 2 n + 10 \)
 ** Deceptively simple
-With just a basic definition, and seven axioms (we've already seen two!), you
-can generate a good deal of mathematics.
+With a basic definition and seven axioms (we've seen two!), you can generate a
+good deal of mathematics.
 * Functions
 ** HEAD
 :PROPERTIES:
@@ -87,6 +87,12 @@ can generate a good deal of mathematics.
 \head{Functions}
 ** Domain, co-domain, range
 [[file:images/Codomain2.pdf]]
+** Injective
+[[file:images/Mappings1.pdf]]
+** Surjective
+[[file:images/Mappings2.pdf]]
+** Bijective
+[[file:images/Mappings3.pdf]]
 ** Higher-order functions
 \[ id\ x = x \]
 
@@ -111,9 +117,6 @@ and equalities.
 :BEAMER_env: definition
 :END:
 \( f ∘ f = id \)
-*** Injective
-*** Surjective
-*** Bijective
 ** Homomorphism
 ``Structure preserving.''
 ** Isomorphism
@@ -239,6 +242,16 @@ class Monoid a where
 :BEAMER_env: frame
 :END:
 \head{Category Theory}
+** Why?
+*** Eilenberg and Mac Lane                                                          :B_quotation:
+:PROPERTIES:
+:BEAMER_env: quotation
+:END:
+\noindent Their [Eilenberg and Mac Lane's] goal was to understand natural
+transformations; in order to do that, functors had to be defined, which
+required categories.
+
+-- Wikipedia
 * Functors
 ** HEAD
 :PROPERTIES:
@@ -246,19 +259,75 @@ class Monoid a where
 :BEAMER_env: frame
 :END:
 \head{Functors}
-** Deceptively simple
-** Not containers!
-A *Functor* sometimes maps to:
-- a container
-- a computation
-- a type-in-context
-\dots{}but a *Functor* /per se/ is none of these.
 ** Categorical model
 [[file:images/Functors1.pdf]]
 ** String diagram
 [[file:images/Functors2.pdf]]
 ** Unit mapping
 [[file:images/Functors3.pdf]]
+** Not containers!
+A *Functor* sometimes maps to:
+- a container
+- a computation
+- a type-in-context
+\dots{}but a *Functor* /per se/ is none of these.
+** Don't be fooled
+*Functors* are humble, but powerful.
+** Identity                                                                           :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data Identity a = Identity a
+
+instance Functor Identity where
+    fmap f (Identity x) = ?
+\end{lstlisting}
+#+END_LaTeX
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Identity as a concept can be used to implement "taintedness", to force
+laziness, to provide singletons, and more.  As should be clear by now, the
+simplicity of a core idea can be misleading.
+** Maybe                                                                              :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data Maybe a = Nothing | Just a
+\end{lstlisting}
+#+END_LaTeX
+** Either                                                                             :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data Left e a = Left e | Right a
+\end{lstlisting}
+#+END_LaTeX
+** Tuples                                                                             :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data Pair p a = Pair p a
+\end{lstlisting}
+#+END_LaTeX
+** Const                                                                              :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data Const c a = Const c
+\end{lstlisting}
+#+END_LaTeX
 * Applicatives
 ** HEAD
 :PROPERTIES:
