@@ -7,7 +7,7 @@ PDF = math-abstractions.pdf
 IMAGES = images/Codomain2.pdf
 
 all: $(IMAGES) $(PDF) Makefile.coq html
-	make -f Makefile.coq
+	make -f Makefile.coq COQFLAGS="-I $(HOME)/src/category-theory/Endo"
 
 open: $(PDF)
 	open $<
@@ -18,8 +18,8 @@ present: all
 html: Makefile.coq
 	make -f Makefile.coq html
 
-Makefile.coq: *.v
-	coq_makefile  . *.v > Makefile.coq
+Makefile.coq: src/*.v
+	coq_makefile  . src/*.v > Makefile.coq
 	sed -i '149,150d' Makefile.coq
 
 images/%.png: images/%.svg
@@ -40,6 +40,5 @@ images/%.pdf: images/%.svg
 
 clean:
 	rm -fr html
-	rm -f $(IMAGES)
 	rm -f *.tex *.pdf *.vrb *.aux *.log *.nav *.out *.snm *.toc *.upa
 	rm -f *.d *.vo *.glob Makefile.coq
