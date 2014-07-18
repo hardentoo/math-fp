@@ -184,6 +184,12 @@ class Monoid a where
     mappend :: a -> a -> a
 \end{lstlisting}
 #+END_LaTeX
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Give the example of why mempty from Monoid is good, but point from Pointed is
+not.
 * Algebras
 ** HEAD
 :PROPERTIES:
@@ -191,6 +197,9 @@ class Monoid a where
 :BEAMER_env: frame
 :END:
 \head{Algebras}
+* [Break]
+** [Break]
+file:images/flip-concatmap.jpg
 * Algebraic Structures
 ** HEAD
 :PROPERTIES:
@@ -218,6 +227,9 @@ class Monoid a where
 :BEAMER_env: frame
 :END:
 \head{Equational Reasoning}
+* [Break]
+** [Break]
+file:images/tail-recursion.jpg
 * Quantification
 ** HEAD
 :PROPERTIES:
@@ -248,6 +260,53 @@ class Monoid a where
 :BEAMER_env: frame
 :END:
 \head{Parametricity}
+** Free theorems
+What does the following type imply (assuming no ⊥)?
+\vspace{1.5ex}
+*** filter                                                                            :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+filter :: (a -> Bool) -> [a] -> [a]
+filter f xs = _
+\end{lstlisting}
+#+END_LaTeX
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+There's a law that I will not be able to violate when writing this function.
+It is "proven by construction".
+** Free theorems
+*** filter                                                                            :B_theorem:
+:PROPERTIES:
+:BEAMER_env: theorem
+:END:
+\( ∀ g : a → b \) \\
+\vspace{1ex}
+\( ∀ p : a → {\tt Bool} \)
+
+\( ∀ q : b → {\tt Bool} \) \\
+\vspace{1ex}
+\( ∀ x, p\ x = q\ (g\ x) ⟶ \\
+  \vspace{1ex}\hspace{2em}map\ g\ (\textbf{filter}\ p\ xs)
+    = \textbf{filter}\ q\ (map\ g\ xs) \)
+** Free theorem generator
+Automatically generate free theorems for sub-languages of Haskell: \\
+\vspace{1ex}
+\fontsize{14}{11}\selectfont
+http://www-ps.iai.uni-bonn.de/cgi-bin/free-theorems-webui.cgi
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Sub-languages include:
+
+- no bottoms (hence no general recursion and no selective strictness)
+- general recursion but no selective strictness
+- general recursion and selective strictness
 * Curry-Howard Isomorphism
 ** HEAD
 :PROPERTIES:
@@ -262,6 +321,9 @@ class Monoid a where
 :BEAMER_env: frame
 :END:
 \head{Free objects}
+* [Break]
+** [Break]
+file:images/hascat.jpg
 * Category Theory
 ** HEAD
 :PROPERTIES:
@@ -269,16 +331,6 @@ class Monoid a where
 :BEAMER_env: frame
 :END:
 \head{Category Theory}
-** Why?
-*** Eilenberg and Mac Lane                                                          :B_quotation:
-:PROPERTIES:
-:BEAMER_env: quotation
-:END:
-\noindent Their [Eilenberg and Mac Lane's] goal was to understand natural
-transformations; in order to do that, functors had to be defined, which
-required categories.
-
--- Wikipedia
 * Functors
 ** HEAD
 :PROPERTIES:
@@ -302,7 +354,7 @@ In Haskell, this is called Const.
 :PROPERTIES:
 :BEAMER_env: definition
 :END:
-\( id = fmap\ id \)
+\( fmap\ id = id \)
 *** 2. Composition law                                                             :B_definition:
 :PROPERTIES:
 :BEAMER_act: <2->
@@ -315,9 +367,23 @@ A *Functor* sometimes maps to:
 - a computation
 \dots{}but a *Functor* /per se/ is neither.
 ** As Context
-\head{\( \textbf{F}\ {\tt a} \)}
+:PROPERTIES:
+:BEAMER_env: frame
+:END:
+\fontsize{42}{36}\selectfont
+\[ \textbf{F}\ {\tt a} \]
 ** Don't be fooled
 *Functors* are humble, but powerful.
+** Origins
+*** Eilenberg and Mac Lane                                                          :B_quotation:
+:PROPERTIES:
+:BEAMER_env: quotation
+:END:
+\noindent Their [Eilenberg and Mac Lane's] goal was to understand natural
+transformations; in order to do that, functors had to be defined, which
+required categories.
+
+-- Wikipedia
 ** Identity                                                                           :B_example:
 :PROPERTIES:
 :BEAMER_env: example
@@ -586,6 +652,9 @@ instance Monoid c
     Const a <*> Const b = ?
 \end{lstlisting}
 #+END_LaTeX
+* [Break]
+** [Break]
+file:images/monad-tutorial.jpg
 * Monads
 ** HEAD
 :PROPERTIES:
@@ -801,6 +870,7 @@ Why can't it be a monad?
 #+BEAMER_HEADER:   , showstringspaces=false
 #+BEAMER_HEADER:   , keepspaces=true=
 #+BEAMER_HEADER:   , breaklines=true
+#+BEAMER_HEADER:   , escapeinside={\%*}{*)},
 #+BEAMER_HEADER:   }
 
 #+BEAMER_HEADER: \newcommand{\head}[1]{\begin{center}
