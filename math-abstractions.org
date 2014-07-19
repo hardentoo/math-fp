@@ -29,10 +29,9 @@ Structures, and relationships between structures.
 :BEAMER_env: note
 :END:
 Math is really a language, a whole system, for talking about structures and
-their relationships.
-
-Meaning and abstraction form a kind of tension, since you move away from
-meaning into abstraction, and to gain meaning you must give up abstraction.
+their relationships.  Meaning and abstraction form a kind of tension, since
+you move away from meaning into abstraction, and to gain meaning you must give
+up abstraction.
 * Sets
 ** HEAD
 :PROPERTIES:
@@ -155,7 +154,7 @@ A function is surjective if the set of possible results is not a subset of its
 type.  Example:
 
 - \texttt{even} is surjective
-- \texttt{times_two} is not
+- \texttt{times2} is not
 ** Bijective
 \begin{center}
 \includegraphics[width=.9\linewidth]{images/Mappings3.pdf}
