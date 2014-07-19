@@ -13,6 +13,13 @@
 \setbeamercolor{block title}{fg=white,bg=orchid}
 \setbeamercolor{bgcolor}{fg=white,bg=blue}
 
+* Overview
+** Workshop overview
+1. Basic math definitions
+2. Algebras and laws
+3. Working with proofs
+4. Category theory & Functors
+5. Monads
 * Mathematics
 ** HEAD
 :PROPERTIES:
@@ -384,7 +391,7 @@ a ⊕ ε &= a \\
 a ⊕ (b ⊕ c) &= (a ⊕ b) ⊕ c
 \end{align*}
 ** Group
-\[ (S, ε, s → s → s) \]
+\[ (S, ε, s → s → s, s → s) \]
 
 Laws:
 
@@ -501,15 +508,66 @@ data List a = Nil
 #+END_LaTeX
 ** Data structures
 Free objects of an algebra become data structures in programming.
-** Evaluation
-Choosing operations for an algebra is equivalent to folding over a free
-object.
 *** note                                                                                 :B_note:
 :PROPERTIES:
 :BEAMER_env: note
 :END:
 Free semigroups are non-empty lists.  Free groups are lists that allow members
 to be removed by appending an inverse value.
+** Folding
+Choosing operations for an algebra is equivalent to folding over its free
+object.
+** Evaluators
+The two essential aspects of an algebra are:
+
+- Forming expressions
+- Evaluating these expressions
+** Free functors
+Every free object is trivially a functor, called a free functor.
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+instance Functor List where
+    fmap _ Nil = Nil
+    fmap f (Cons x xs)
+        = Cons (f x) (fmap f xs)
+\end{lstlisting}
+#+END_LaTeX
+** F-algebras
+We can encode algebras using functions and free functors:
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+type Algebra f a = f a -> a
+
+sum :: Algebra List Int
+sum Nil = 0
+sum (Cons x xs) = x + sum xs
+\end{lstlisting}
+#+END_LaTeX
+** Recursion schemes
+We won't cover it, but the recursion can be abstracted away for an even more
+general form: \\
+\vspace{1ex}
+\fontsize{14}{11}\selectfont
+https://www.fpcomplete.com/user/bartosz/understanding-algebras
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+This can have speed benefits by improving optimization opportunities, and can
+make otherwise recursive algorithms much simpler to write.
+* [Break]
+** [Break]
+\begin{center}
+\includegraphics[width=.9\linewidth]{images/tail-recursion.jpg}
+\end{center}
 * Equational Reasoning
 ** HEAD
 :PROPERTIES:
@@ -517,11 +575,15 @@ to be removed by appending an inverse value.
 :BEAMER_env: frame
 :END:
 \head{Equational Reasoning}
-* [Break]
-** [Break]
-\begin{center}
-\includegraphics[width=.9\linewidth]{images/tail-recursion.jpg}
-\end{center}
+** Working with proofs
+Equational reasoning gives us a way to reason about pure computations.
+** Basic format
+\begin{align*}
+x  &= y                      \\
+   &= y'  \tag*{reason}      \\
+   &= y'' \tag*{reason}      \\
+   &= x   \tag*{reason}
+\end{align*}
 * Quantification
 ** HEAD
 :PROPERTIES:
