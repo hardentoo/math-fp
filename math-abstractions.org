@@ -22,13 +22,14 @@
 \head{Mathematics}
 ** Meaning
 There isn't any.
+** Abstraction
+Structures, and relationships between structures.
 *** note                                                                                 :B_note:
 :PROPERTIES:
 :BEAMER_env: note
 :END:
-This is just some notes.
-** Abstraction
-Structures, and relationships between structures.
+Meaning and abstraction from a kind of tension, since you move away from
+meaning into abstraction, and to gain meaning you must give up abstraction.
 * Sets
 ** HEAD
 :PROPERTIES:
@@ -43,17 +44,37 @@ Structures, and relationships between structures.
 What is really interesting is just how much can be done with such a minimal
 amount of structure.
 ** ``Stuff''
-A set is a collection of elements.
+\begin{center}
+\includegraphics[width=.65\linewidth]{images/Sets1.pdf}
+\end{center}
+** ``Stuff''
+\begin{center}
+\includegraphics[width=.65\linewidth]{images/Sets2.pdf}
+\end{center}
+** Sets of sets
+\begin{center}
+\includegraphics[width=.65\linewidth]{images/Sets3.pdf}
+\end{center}
+** Programmatic
+Can be modeled programmatically.
 *** \vspace*{-3.5ex}                                                                  :B_example:
 :PROPERTIES:
-:BEAMER_act: <2->
 :BEAMER_env: example
 :END:
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
 type Set a = a -> Bool
+
+import Data.Set as S
+type Set a = S.Set a
 \end{lstlisting}
 #+END_LaTeX
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+This introduces the idea of modeling constructs as functions instead of data
+structures.
 ** Extensional
 Can be defined by stating its elements.
 *** \vspace*{-3.5ex}                                                                  :B_example:
@@ -77,6 +98,12 @@ Values can be extensionally equal, but intensionally distinct.
 \( n \mapsto 2 (n + 5) \)
 
 \( n \mapsto 2 n + 10 \)
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+The question of equality, and of the difference between denotational semantics
+and operational semantics, comes up again and again in computing.
 ** Deceptively simple
 With a basic definition and seven axioms (we've seen two!), you can generate a
 good deal of mathematics.
@@ -88,13 +115,21 @@ good deal of mathematics.
 :END:
 \head{Functions}
 ** Domain, co-domain, range
-[[file:images/Codomain2.pdf]]
+\begin{center}
+\includegraphics[width=.9\linewidth]{images/Codomain2.pdf}
+\end{center}
 ** Injective
-[[file:images/Mappings1.pdf]]
+\begin{center}
+\includegraphics[width=.9\linewidth]{images/Mappings1.pdf}
+\end{center}
 ** Surjective
-[[file:images/Mappings2.pdf]]
+\begin{center}
+\includegraphics[width=.9\linewidth]{images/Mappings2.pdf}
+\end{center}
 ** Bijective
-[[file:images/Mappings3.pdf]]
+\begin{center}
+\includegraphics[width=.9\linewidth]{images/Mappings3.pdf}
+\end{center}
 ** Higher-order functions
 *** Identity                                                                       :B_definition:
 :PROPERTIES:
@@ -290,9 +325,11 @@ It is "proven by construction".
 
 \( ∀ q : b → {\tt Bool} \) \\
 \vspace{1ex}
-\( ∀ x, p\ x = q\ (g\ x) ⟶ \\
+\begin{align*}
+∀ x, p\ x = q\ (g\ x) ⟶ \\
   \vspace{1ex}\hspace{2em}map\ g\ (\textbf{filter}\ p\ xs)
-    = \textbf{filter}\ q\ (map\ g\ xs) \)
+    = \textbf{filter}\ q\ (map\ g\ xs)
+\end{align*}
 ** Free theorem generator
 Automatically generate free theorems for sub-languages of Haskell: \\
 \vspace{1ex}
@@ -302,11 +339,9 @@ http://www-ps.iai.uni-bonn.de/cgi-bin/free-theorems-webui.cgi
 :PROPERTIES:
 :BEAMER_env: note
 :END:
-Sub-languages include:
-
-- no bottoms (hence no general recursion and no selective strictness)
-- general recursion but no selective strictness
-- general recursion and selective strictness
+Sub-languages include: no bottoms (hence no general recursion and no selective
+strictness); general recursion but no selective strictness; general recursion
+and selective strictness.
 * Curry-Howard Isomorphism
 ** HEAD
 :PROPERTIES:
@@ -331,6 +366,10 @@ file:images/hascat.jpg
 :BEAMER_env: frame
 :END:
 \head{Category Theory}
+** Sets with structure
+\begin{center}
+\includegraphics[width=.65\linewidth]{images/Category1.pdf}
+\end{center}
 * Functors
 ** HEAD
 :PROPERTIES:
@@ -339,11 +378,13 @@ file:images/hascat.jpg
 :END:
 \head{Functors}
 ** Categorical model
-[[file:images/Functors1.pdf]]
-** String diagram
-[[file:images/Functors2.pdf]]
+\begin{center}
+\includegraphics[width=.9\linewidth]{images/Functors1.pdf}
+\end{center}
 ** Unit mapping
-[[file:images/Functors3.pdf]]
+\begin{center}
+\includegraphics[width=.9\linewidth]{images/Functors2.pdf}
+\end{center}
 *** note                                                                                 :B_note:
 :PROPERTIES:
 :BEAMER_env: note
