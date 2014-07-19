@@ -668,13 +668,6 @@ and selective strictness.
 :BEAMER_env: frame
 :END:
 \head{Curry-Howard Isomorphism}
-* Free objects
-** HEAD
-:PROPERTIES:
-:BEAMER_opt: plain
-:BEAMER_env: frame
-:END:
-\head{Free objects}
 * [Break]
 ** [Break]
 \begin{center}
