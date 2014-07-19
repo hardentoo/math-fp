@@ -28,7 +28,10 @@ Structures, and relationships between structures.
 :PROPERTIES:
 :BEAMER_env: note
 :END:
-Meaning and abstraction from a kind of tension, since you move away from
+Math is really a language, a whole system, for talking about structures and
+their relationships.
+
+Meaning and abstraction form a kind of tension, since you move away from
 meaning into abstraction, and to gain meaning you must give up abstraction.
 * Sets
 ** HEAD
@@ -55,6 +58,20 @@ amount of structure.
 \begin{center}
 \includegraphics[width=.65\linewidth]{images/Sets3.pdf}
 \end{center}
+** Extensional
+Can be defined by stating its elements.
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+\( \{ \ True, False\ \} \)
+** Intensional
+Or by describing them.
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+\( \{ \ x \ |\  x \in \mathbb{N}, even(x)\ \} \)
 ** Programmatic
 Can be modeled programmatically.
 *** \vspace*{-3.5ex}                                                                  :B_example:
@@ -75,35 +92,6 @@ type Set a = S.Set a
 :END:
 This introduces the idea of modeling constructs as functions instead of data
 structures.
-** Extensional
-Can be defined by stating its elements.
-*** \vspace*{-3.5ex}                                                                  :B_example:
-:PROPERTIES:
-:BEAMER_env: example
-:END:
-\( \{ \ True, False\ \} \)
-** Intensional
-Or by describing them.
-*** \vspace*{-3.5ex}                                                                  :B_example:
-:PROPERTIES:
-:BEAMER_env: example
-:END:
-\( \{ \ x \ |\  x \in \mathbb{N}, even(x)\ \} \)
-** Distinction
-Values can be extensionally equal, but intensionally distinct.
-*** \vspace*{-3.5ex}                                                                  :B_example:
-:PROPERTIES:
-:BEAMER_env: example
-:END:
-\( n \mapsto 2 (n + 5) \)
-
-\( n \mapsto 2 n + 10 \)
-*** note                                                                                 :B_note:
-:PROPERTIES:
-:BEAMER_env: note
-:END:
-The question of equality, and of the difference between denotational semantics
-and operational semantics, comes up again and again in computing.
 ** Deceptively simple
 With a basic definition and seven axioms (we've seen two!), you can generate a
 good deal of mathematics.
@@ -122,10 +110,34 @@ good deal of mathematics.
 \begin{center}
 \includegraphics[width=.9\linewidth]{images/Mappings1.pdf}
 \end{center}
+** Injective
+\[ f : A → B \]
+
+\[ ∀ x, y ∈ A \]
+
+\[ f\ x = f\ y → x = y \]
+** Injective
+Examples of injective things:
+
+- Data constructors
+- Type constructors
+- But not type synonyms\dots{}
 ** Surjective
 \begin{center}
 \includegraphics[width=.9\linewidth]{images/Mappings2.pdf}
 \end{center}
+** Surjective
+\[ f : A → B \]
+
+\[ ∀ y ∈ B, ∃ x ∈ A \]
+
+\[ f\ x = y \]
+** Surjective
+A function is surjective if the set of possible results is not a subset of its
+type.  Example:
+
+- \texttt{even} is surjective
+- \texttt{times_two} is not
 ** Bijective
 \begin{center}
 \includegraphics[width=.9\linewidth]{images/Mappings3.pdf}
@@ -196,6 +208,27 @@ In terms of the types involved:
 :BEAMER_env: note
 :END:
 Assuming of course \( cod(f) = A, cod(g) = B \).
+** Test it out
+\vspace{-2ex}
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data Unit = Unit
+data Maybe a = Nothing | Just a
+
+toMaybe :: Integer -> Maybe Unit
+fromMaybe :: Maybe Unit -> Integer
+\end{lstlisting}
+#+END_LaTeX
+*** True?                                                                          :B_alertblock:
+:PROPERTIES:
+:BEAMER_act: <2->
+:BEAMER_env: alertblock
+:END:
+\texttt{Maybe Unit}\hspace{1em}≅\hspace{1em}\texttt{Integer}
 * Laws
 ** HEAD
 :PROPERTIES:
@@ -225,6 +258,17 @@ class Monoid a where
 :END:
 Give the example of why mempty from Monoid is good, but point from Pointed is
 not.
+** Associativity
+\[ x • (y • z) = (x • y) • z \]
+** Commutativity
+\[ x • y = y • x \]
+** Transitivity
+\[ x • y → y • z → x • z \]
+* [Break]
+** [Break]
+\begin{center}
+\includegraphics[width=.9\linewidth]{images/flip-concatmap.jpg}
+\end{center}
 * Algebras
 ** HEAD
 :PROPERTIES:
@@ -232,29 +276,213 @@ not.
 :BEAMER_env: frame
 :END:
 \head{Algebras}
-* [Break]
-** [Break]
-file:images/flip-concatmap.jpg
-* Algebraic Structures
-** HEAD
+** Sets with structure
+Algebras are basically:
+- a set (called the /carrier/)
+- functions closed over the set
+- laws to govern these functions
+** Named structures
+Some structures recur often enough that it's useful to name them, but the
+names are arbitrary.
+** Magma
+\[ (S, s → s → s) \]
+
+\vspace{2em}
+The set of laws is empty!
+** Magma
+*** \vspace*{-3.5ex}                                                                  :B_example:
 :PROPERTIES:
-:BEAMER_opt: plain
-:BEAMER_env: frame
+:BEAMER_env: example
 :END:
-\head{Algebraic Structures}
-** Magmas
-** Semigroups
-** Monoids
-** Groups
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+class Magma a where
+    binop :: a -> a -> a
+
+instance Magma Integer where
+    binop = (+)
+\end{lstlisting}
+#+END_LaTeX
+** Semigroup
+\[ (S, s → s → s) \]
+
+Laws:
+
+1. associativity
+** Semigroup
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+class Semigroup a where
+    (<>) :: a -> a -> a
+\end{lstlisting}
+#+END_LaTeX
+*** Semigroup law
+:PROPERTIES:
+:BEAMER_act: <2->
+:END:
+\vspace{-3.5ex}
+\begin{align*}
+a ⊕ (b ⊕ c) &= (a ⊕ b) ⊕ c
+\end{align*}
+** Monoid
+\[ (S, ε, s → s → s) \]
+
+Laws:
+
+1. left identity
+2. right identity
+3. associativity
+** Monoid
+\vspace{-2ex}
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+class Monoid a where
+    mempty  :: a
+    mappend :: a -> a -> a
+\end{lstlisting}
+#+END_LaTeX
+*** Monoid laws                                                                    :B_definition:
+:PROPERTIES:
+:BEAMER_act: <2->
+:END:
+\vspace{-3.5ex}
+\begin{align*}
+ε ⊕ a &= a \\
+a ⊕ ε &= a \\
+a ⊕ (b ⊕ c) &= (a ⊕ b) ⊕ c
+\end{align*}
+** Group
+\[ (S, ε, s → s → s) \]
+
+Laws:
+
+1. left identity
+2. right identity
+3. associativity
+4. inverse elements
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Note that the only difference here is in the laws, not the operations.
+** Group
+*** Group laws
+\vspace{-3.5ex}
+\begin{align*}
+ε ⊕ a &= a \\
+a ⊕ ε &= a \\
+a ⊕ (b ⊕ c) &= (a ⊕ b) ⊕ c \\
+a ⊕ a^{-1} &= ε
+\end{align*}
 ** Homomorphism
 ``Structure preserving.''
-* Type Algebras
-** HEAD
+*** \vspace*{-3.5ex}                                                                  :B_example:
 :PROPERTIES:
-:BEAMER_opt: plain
-:BEAMER_env: frame
+:BEAMER_env: example
 :END:
-\head{Type Algebras}
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+floor :: Float -> Int
+\end{lstlisting}
+#+END_LaTeX
+** Free objects
+What if our monoid, instead of /doing something/, only constructed values?
+** Free objects
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data MV a = MEmpty
+          | Var a
+          | MAppend (MV a) (MV a)
+
+instance Monoid (MV a) where
+    mempty  = MEmpty
+    mappend = MAppend 
+\end{lstlisting}
+#+END_LaTeX
+** Building trees
+\[ (a ⊕ b) ⊕ c ⊕ (d ⊕ e) \]
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+ (Var a `MAppend` Var b)
+   `MAppend`
+ Var c
+   `MAppend`
+ (Var d `MAppend` Var e)
+\end{lstlisting}
+#+END_LaTeX
+** Using the laws
+Due to the law of associativity, calls to \texttt{mappend} can always be
+re-associated:
+
+\[ a ⊕ (b ⊕ (c ⊕ (d ⊕ e))) \]
+** Using the laws
+This changes the expression into something linear, rather than a tree:
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+ Var a `MAppend`
+ (Var b `MAppend`
+  (Var c `MAppend`
+   (Var d `MAppend`
+    (Var e `MAppend` MEmpty))))
+\end{lstlisting}
+#+END_LaTeX
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+This structure should look familiar...
+** Using the laws
+Relying on this law, we can simplify the data type:
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data MV a = MEmpty
+          | MAppend a (MV a)
+\end{lstlisting}
+#+END_LaTeX
+** Using the laws
+But let's rename the constructors to something more familiar:
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data List a = Nil
+            | Cons a (List a)
+\end{lstlisting}
+#+END_LaTeX
+** Data structures
+Free objects of an algebra become data structures in programming.
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Free semigroups are non-empty lists.  Free groups are lists that allow members
+to be removed by appending an inverse value.
 * Equational Reasoning
 ** HEAD
 :PROPERTIES:
@@ -264,7 +492,9 @@ file:images/flip-concatmap.jpg
 \head{Equational Reasoning}
 * [Break]
 ** [Break]
-file:images/tail-recursion.jpg
+\begin{center}
+\includegraphics[width=.9\linewidth]{images/tail-recursion.jpg}
+\end{center}
 * Quantification
 ** HEAD
 :PROPERTIES:
@@ -319,17 +549,17 @@ It is "proven by construction".
 :PROPERTIES:
 :BEAMER_env: theorem
 :END:
+\vspace{1ex}
 \( ∀ g : a → b \) \\
 \vspace{1ex}
 \( ∀ p : a → {\tt Bool} \)
 
-\( ∀ q : b → {\tt Bool} \) \\
-\vspace{1ex}
-\begin{align*}
-∀ x, p\ x = q\ (g\ x) ⟶ \\
+\( ∀ q : b → {\tt Bool} \)
+\begin{flalign*}
+∀ x, p\ x = q\ (g\ x) ⟶ & \\
   \vspace{1ex}\hspace{2em}map\ g\ (\textbf{filter}\ p\ xs)
-    = \textbf{filter}\ q\ (map\ g\ xs)
-\end{align*}
+    &= \textbf{filter}\ q\ (map\ g\ xs) &
+\end{flalign*}
 ** Free theorem generator
 Automatically generate free theorems for sub-languages of Haskell: \\
 \vspace{1ex}
@@ -358,7 +588,9 @@ and selective strictness.
 \head{Free objects}
 * [Break]
 ** [Break]
-file:images/hascat.jpg
+\begin{center}
+\includegraphics[width=.9\linewidth]{images/hascat.jpg}
+\end{center}
 * Category Theory
 ** HEAD
 :PROPERTIES:
@@ -695,7 +927,9 @@ instance Monoid c
 #+END_LaTeX
 * [Break]
 ** [Break]
-file:images/monad-tutorial.jpg
+\begin{center}
+\includegraphics[width=.9\linewidth]{images/monad-tutorial.jpg}
+\end{center}
 * Monads
 ** HEAD
 :PROPERTIES:
