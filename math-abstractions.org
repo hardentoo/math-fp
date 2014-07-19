@@ -92,6 +92,20 @@ type Set a = S.Set a
 :END:
 This introduces the idea of modeling constructs as functions instead of data
 structures.
+** Exercise
+Using the functional definition of sets, define union and intersection.
+*** \vspace*{-3.5ex}                                                               :B_alertblock:
+:PROPERTIES:
+:BEAMER_env: alertblock
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+type Set a = a -> Bool
+
+union :: Set a -> Set a -> Set a
+inter :: Set a -> Set a -> Set a
+\end{lstlisting}
+#+END_LaTeX
 ** Deceptively simple
 With a basic definition and seven axioms (we've seen two!), you can generate a
 good deal of mathematics.
@@ -122,6 +136,10 @@ Examples of injective things:
 - Data constructors
 - Type constructors
 - But not type synonyms\dots{}
+** Exercise
+1. Write an injective functions on integer, and one that is not injective.
+
+2. How do you test it in both cases?
 ** Surjective
 \begin{center}
 \includegraphics[width=.9\linewidth]{images/Mappings2.pdf}
@@ -191,6 +209,13 @@ and equalities.
 :END:
 I only mention these to show how much structures we can infer from a very
 small set of building blocks.
+** Exercise
+For the set of integers, show examples of:
+
+1. idempotency
+2. involution
+3. section
+4. retraction
 ** Isomorphism
 An isomorphism is a pair of functions satisfying two equations:
 
@@ -208,7 +233,7 @@ In terms of the types involved:
 :BEAMER_env: note
 :END:
 Assuming of course \( cod(f) = A, cod(g) = B \).
-** Test it out
+** Exercise
 \vspace{-2ex}
 *** \vspace*{-3.5ex}                                                                  :B_example:
 :PROPERTIES:
@@ -477,6 +502,9 @@ data List a = Nil
 #+END_LaTeX
 ** Data structures
 Free objects of an algebra become data structures in programming.
+** Evaluation
+Choosing operations for an algebra is equivalent to folding over a free
+object.
 *** note                                                                                 :B_note:
 :PROPERTIES:
 :BEAMER_env: note
