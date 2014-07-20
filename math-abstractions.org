@@ -29,6 +29,13 @@
 \head{Mathematics}
 ** Meaning
 There isn't any.
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+One of the things that tripped me up most when I started studying math was my
+desire for meaning: for examples that would motivate and explain what the
+concept was "about" or "for".
 ** Abstraction
 Structures, and relationships between structures.
 *** note                                                                                 :B_note:
@@ -295,8 +302,8 @@ not.
 \[ x • y = y • x \]
 ** Transitivity
 \[ x • y → y • z → x • z \]
-* [Break]
-** [Break]
+* [Questions?]
+** [Questions?]
 \begin{center}
 \includegraphics[width=.9\linewidth]{images/flip-concatmap.jpg}
 \end{center}
@@ -563,6 +570,20 @@ https://www.fpcomplete.com/user/bartosz/understanding-algebras
 :END:
 This can have speed benefits by improving optimization opportunities, and can
 make otherwise recursive algorithms much simpler to write.
+** Computational structures
+All our free functors can be modeled as computations, rather than concrete
+values.
+
+\[ \texttt{List}\ a \ ≅ \ ∀ r, r → (a → r → r) → r \]
+** Exercise
+Prove the following isomorphisms:
+\begin{align*}
+  \texttt{Identity}\ a \ ≅  &  \ ∀ r, (a → r) → r            \\
+     \texttt{Maybe}\ a \ ≅  &  \ ∀ r, r → (a → r) → r        \\
+\texttt{Either}\ a \ b \ ≅  &  \ ∀ r, (a → r) → (b → r) → r  \\
+                (a, b) \ ≅  &  \ ∀ r, (a → b → r) → r        \\
+      \texttt{List}\ a \ ≅  &  \ ∀ r, r → (a → r → r) → r
+\end{align*}
 * [Break]
 ** [Break]
 \begin{center}
