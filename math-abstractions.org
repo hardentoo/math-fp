@@ -264,7 +264,7 @@ data Maybe a = Nothing | Just a
 :BEAMER_act: <2->
 :BEAMER_env: alertblock
 :END:
-\fontsize{14}{11}\selectfont
+\fontsize{14}{16}\selectfont
 \vspace{-2ex}
 \begin{align*}
 \texttt{toMaybe}   & :: \texttt{Integer}\ →\ \texttt{Maybe\ Unit} \\
@@ -577,7 +577,7 @@ sum (Cons x xs) = x + sum xs
 We won't cover it, but the recursion can be abstracted away for an even more
 general form: \\
 \vspace{1ex}
-\fontsize{14}{11}\selectfont
+\fontsize{14}{14}\selectfont
 https://www.fpcomplete.com/user/bartosz/understanding-algebras
 *** note                                                                                 :B_note:
 :PROPERTIES:
@@ -692,7 +692,7 @@ x  &= y                      \\
    &= x   \tag*{reason}
 \end{align*}
 ** Example
-\fontsize{14}{11}\selectfont
+\fontsize{14}{16}\selectfont
 \begin{align*}
 f ∘ (g ∘ h) &= (f ∘ g) ∘ h                          \\
             &= (λx → f\ (g\ x)) ∘ h
@@ -804,7 +804,7 @@ also a proof of the theorem.
 ** Free theorem generator
 Automatically generate free theorems for sub-languages of Haskell: \\
 \vspace{1ex}
-\fontsize{14}{11}\selectfont
+\fontsize{14}{14}\selectfont
 http://www-ps.iai.uni-bonn.de/cgi-bin/free-theorems-webui.cgi
 *** note                                                                                 :B_note:
 :PROPERTIES:
@@ -814,7 +814,7 @@ Sub-languages include: no bottoms (hence no general recursion and no selective
 strictness); general recursion but no selective strictness; general recursion
 and selective strictness.
 ** Further reading
-\fontsize{14}{11}\selectfont
+\fontsize{14}{16}\selectfont
 http://ttic.uchicago.edu/~dreyer/course/papers/wadler.pdf
 * Curry-Howard Isomorphism
 ** HEAD
@@ -1077,6 +1077,42 @@ data Pair p a = Pair p a
 data Const c a = Const c
 \end{lstlisting}
 #+END_LaTeX
+** Exercise
+Remember how free functors were encoded as functions?  This extends to *any*
+functor:
+
+\[ f\ a \ ≅ \ ∀ r, (a → r) → f\ r \]
+** The isomorphism
+\fontsize{14}{16}\selectfont
+\vspace{-2ex}
+\begin{align*}
+\texttt{lower} & \ :: \ (∀ r.\ (a → r) → f\ r) \ → \ f\ a                    \\
+               &                                                             \\
+\texttt{lift}  & \ :: \ \texttt{Functor}\ f \ ⇒ \ f\ a \ → \ (a → r) → f\ r
+\end{align*}
+** Yoneda lemma
+You just proved the Yoneda lemma in a functional language!
+** Exercise
+A Yoneda embedding is itself a *Functor*:
+
+#+BEGIN_LaTeX
+\vspace{2ex}
+\lstset{basicstyle=\footnotesize\ttfamily}
+\begin{lstlisting}[language=Haskell]
+data Yoneda f a
+    = Yoneda (forall r. (a -> r) -> f r)
+
+instance Functor (Yoneda f) where
+    fmap g (Yoneda k) = ?
+\end{lstlisting}
+#+END_LaTeX
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Identity as a concept can be used to implement "taintedness", to force
+laziness, to provide singletons, and more.  As should be clear by now, the
+simplicity of a core idea can be misleading.
 * Applicatives
 ** HEAD
 :PROPERTIES:
