@@ -578,12 +578,30 @@ values.
 ** Exercise
 Prove the following isomorphisms:
 \begin{align*}
-  \texttt{Identity}\ a \ ≅  &  \ ∀ r, (a → r) → r            \\
-     \texttt{Maybe}\ a \ ≅  &  \ ∀ r, r → (a → r) → r        \\
-\texttt{Either}\ a \ b \ ≅  &  \ ∀ r, (a → r) → (b → r) → r  \\
-                (a, b) \ ≅  &  \ ∀ r, (a → b → r) → r        \\
-      \texttt{List}\ a \ ≅  &  \ ∀ r, r → (a → r → r) → r
+  \texttt{Identity}\ a \ ≅  & \ ∀ r, (a → r) → r            \\
+     \texttt{Maybe}\ a \ ≅  & \ ∀ r, r → (a → r) → r        \\
+\texttt{Either}\ a \ b \ ≅  & \ ∀ r, (a → r) → (b → r) → r  \\
+                (a, b) \ ≅  & \ ∀ r, (a → b → r) → r        \\
+      \texttt{List}\ a \ ≅  & \ ∀ r, r → (a → r → r) → r
 \end{align*}
+** Exercise
+Easy:
+- Write \texttt{head} for both forms of list.
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+    head :: List a -> a
+    head :: [a] -> a
+\end{lstlisting}
+#+END_LaTeX
+
+Hard:
+- Write \texttt{tail} for both forms of list.
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+    tail :: List a -> List a
+    tail :: [a] -> [a]
+\end{lstlisting}
+#+END_LaTeX
 * [Break]
 ** [Break]
 \begin{center}
