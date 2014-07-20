@@ -297,11 +297,11 @@ class Monoid a where
 Give the example of why mempty from Monoid is good, but point from Pointed is
 not.
 ** Associativity
-\[ x • (y • z) = (x • y) • z \]
+\[ x ∙ (y ∙ z) = (x ∙ y) ∙ z \]
 ** Commutativity
-\[ x • y = y • x \]
+\[ x ∙ y = y ∙ x \]
 ** Transitivity
-\[ x • y → y • z → x • z \]
+\[ x ∙ y → y ∙ z → x ∙ z \]
 * [Questions?]
 ** [Questions?]
 \begin{center}
@@ -571,8 +571,7 @@ https://www.fpcomplete.com/user/bartosz/understanding-algebras
 This can have speed benefits by improving optimization opportunities, and can
 make otherwise recursive algorithms much simpler to write.
 ** Computational structures
-All our free functors can be modeled as computations, rather than concrete
-values.
+Every free functor can be modeled as a computation rather than an ADT.
 
 \[ \texttt{List}\ a \ ≅ \ ∀ r, r → (a → r → r) → r \]
 ** Exercise
@@ -602,6 +601,60 @@ Hard:
     tail :: [a] -> [a]
 \end{lstlisting}
 #+END_LaTeX
+** Types are algebras too
+\vspace{-2ex}
+\begin{align*}
+a + b &= \texttt{Either}\ a\ b                   \\
+      &= \texttt{Foo}\ a\ |\ \texttt{Bar}\ b     \\
+a * b &= (a, b)                                  \\
+      &= \texttt{Foo}\ a\ b                      \\
+b^{a} &= a → b                                   \\
+1     &= \texttt{()}                             \\
+0     &= \texttt{Void}                
+\end{align*}
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Why is this good?  Because you can apply algebraic manipulations to types to
+derive other types.
+** Which algebra is it?
+A *near-semiring* structure over the set $S$ of types.
+
+1. $(S, +, 0)$ is a monoid
+2. $(S, *)$ is a semigroup
+3. $∀ a, b, c ∈ S, (a + b) * c = a * c + b * c$
+4. $∀ a ∈ S, 0 * a = 0$
+** Example: currying
+\[ (c^{b})^{a} = c^{b a} \]
+
+#+BEGIN_LaTeX
+\vspace{1ex}
+\begin{center}
+\begin{lstlisting}[language=Haskell]
+   a -> b -> c  <>  (a, b) -> c
+\end{lstlisting}
+\end{center}
+#+END_LaTeX
+** Example: lists
+\vspace{-2ex}
+\begin{align*}
+L(a) &= 1 + a ∙ L(a)                                      \\
+     &= 1 + a ∙ (1 + a ∙ L(a))                            \\
+     &= 1 + a + a^{2} ∙ (1 + a ∙ L(a))                    \\
+     &= 1 + a + a^{2} + a^{3} ∙ (1 + a ∙ L(a))            \\
+     &= \cdots{}                                          \\
+     &= 1 + a + a^{2} + a^{3} + a^{4} + a^{5} + \cdots{}
+\end{align*}
+** Example: lists
+\vspace{-2ex}
+\begin{align*}
+CL(a) &= ∀ r, r → (a → r → r) → r     \\
+      &= ∀ r, (r^{(a → r → r)})^{r}   \\
+      &= ∀ r, (r^{((r^{r})^{a})})^{r} \\
+      &= ∀ r, r^{(r ∙ r^{(r ∙ a)})}   \\
+      &= ∀ r, r^{r^{(1 + a ∙ r)}}
+\end{align*}
 * [Break]
 ** [Break]
 \begin{center}
