@@ -780,7 +780,8 @@ filter f xs = _
 :BEAMER_env: note
 :END:
 There's a law that I will not be able to violate when writing this function.
-It is "proven by construction".
+It is "proven by construction".  This is one of the more powerful concepts of
+polymorphic programming in functional languages.
 ** Free theorems
 *** filter                                                                            :B_theorem:
 :PROPERTIES:
@@ -839,7 +840,8 @@ http://ttic.uchicago.edu/~dreyer/course/papers/wadler.pdf
 :END:
 When we state a type, that's the same as formulating a theorem using the
 language of types.  Finding an inhabitant of that type establishes an
-existence proof for the theorem.
+existence proof for the theorem.  Programmers are actual posing theorems and
+constructing proofs all the time without realizing it.
 * Category Theory
 ** HEAD
 :PROPERTIES:
@@ -877,19 +879,19 @@ and morphisms.
 \begin{description}[style=nextline]
   \item[Objects]     Sets
   \item[Morphisms]   Functions
-  \item[Composition] Typical
+  \item[Composition] As functions do
 \end{description}
 ** Example: Mon
 \begin{description}[style=nextline]
   \item[Objects]     Sets with monoid structure
   \item[Morphisms]   Monoid homomorphisms
-  \item[Composition] As in Set
+  \item[Composition] As functions do
 \end{description}
 ** Example: Cat
 \begin{description}[style=nextline]
   \item[Objects]     Categories
   \item[Morphisms]   Functors
-  \item[Composition] (As with functions)
+  \item[Composition] As functions do
 \end{description}
 ** Example: Fun(C,D)
 \begin{description}[style=nextline]
@@ -897,11 +899,11 @@ and morphisms.
   \item[Morphisms]   Natural transformations
   \item[Composition] As polymorphic functions
 \end{description}
-** There are many categories
+** Many, many categories
 Any book on category theory will have many more examples of categories than
 these few.
 ** Concepts transfer
-One of the profound things about category theory is the way ideas transfer.
+One of the profound concepts in category theory is how ideas transfer.
 *** note                                                                                 :B_note:
 :PROPERTIES:
 :BEAMER_env: note
@@ -1358,7 +1360,7 @@ instance Functor Identity where
     \tag*{\textbf{defn. {\tt >>=}}}                  \\
  &= (λx → f\ x >>= g)\ {\tt m′}
     \tag*{\textbf{η-expansion}}                      \\
- &= {\tt Identity\ m′} >>= (\textbackslash x → f\ x >>= g)
+ &= {\tt Identity\ m′} >>= (λx → f\ x >>= g)
     \tag*{\textbf{defn. {\tt >>=}}}                  \\
  &= m >>= (λx → f\ x >>= g)
     \tag*{\textbf{fold {\tt m}}}
