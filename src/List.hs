@@ -1,4 +1,4 @@
-module Notes where
+module List where
 
 import Control.Applicative
 import Control.Monad

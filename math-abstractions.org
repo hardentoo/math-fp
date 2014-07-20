@@ -150,7 +150,8 @@ Examples of injective things:
 - Type constructors
 - But not type synonyms\dots{}
 ** Exercise
-1. Write an injective functions on integer, and one that is not injective.
+1. Write an injective function on \texttt{Integer}, and one that is not
+   injective.
 
 2. How do you test it in both cases?
 ** Surjective
@@ -256,17 +257,19 @@ Assuming of course \( cod(f) = A, cod(g) = B \).
 \begin{lstlisting}[language=Haskell]
 data Unit = Unit
 data Maybe a = Nothing | Just a
-
-toMaybe :: Integer -> Maybe Unit
-fromMaybe :: Maybe Unit -> Integer
 \end{lstlisting}
 #+END_LaTeX
-*** True?                                                                          :B_alertblock:
+*** Write two functions                                                            :B_alertblock:
 :PROPERTIES:
 :BEAMER_act: <2->
 :BEAMER_env: alertblock
 :END:
-\texttt{Maybe Unit}\hspace{1em}≅\hspace{1em}\texttt{Integer}
+\fontsize{14}{11}\selectfont
+\vspace{-2ex}
+\begin{align*}
+\texttt{toMaybe}   & :: \texttt{Integer}\ →\ \texttt{Maybe\ Unit} \\
+\texttt{fromMaybe} & :: \texttt{Maybe\ Unit}\ →\ \texttt{Integer}
+\end{align*}
 * Laws
 ** HEAD
 :PROPERTIES:
@@ -302,6 +305,18 @@ not.
 \[ x ∙ y = y ∙ x \]
 ** Transitivity
 \[ x ∙ y → y ∙ z → x ∙ z \]
+** Lawless!
+Behold, the face of evil:
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+class Pointed a where
+    point :: a
+\end{lstlisting}
+#+END_LaTeX
 * [Questions?]
 ** [Questions?]
 \begin{center}
@@ -502,7 +517,7 @@ data MV a = MEmpty
 \end{lstlisting}
 #+END_LaTeX
 ** Using the laws
-But let's rename the constructors to something more familiar:
+Let's rename the constructors to something more familiar:
 *** \vspace*{-3.5ex}                                                                  :B_example:
 :PROPERTIES:
 :BEAMER_env: example
@@ -544,7 +559,7 @@ instance Functor List where
 \end{lstlisting}
 #+END_LaTeX
 ** F-algebras
-We can encode algebras using functions and free functors:
+We can encode other algebras using functions and free functors:
 *** \vspace*{-3.5ex}                                                                  :B_example:
 :PROPERTIES:
 :BEAMER_env: example
@@ -571,7 +586,7 @@ https://www.fpcomplete.com/user/bartosz/understanding-algebras
 This can have speed benefits by improving optimization opportunities, and can
 make otherwise recursive algorithms much simpler to write.
 ** Computational structures
-Every free functor can be modeled as a computation rather than an ADT.
+Every free functor can be modeled as a computation rather than as an ADT:
 
 \[ \texttt{List}\ a \ ≅ \ ∀ r, r → (a → r → r) → r \]
 ** Exercise
@@ -605,11 +620,11 @@ Hard:
 \vspace{-2ex}
 \begin{align*}
 a + b &= \texttt{Either}\ a\ b                   \\
-      &= \texttt{Foo}\ a\ |\ \texttt{Bar}\ b     \\
+      &= \texttt{Foo}\ a\ |\ \texttt{Bar}\ b     \\[1ex]
 a * b &= (a, b)                                  \\
-      &= \texttt{Foo}\ a\ b                      \\
+      &= \texttt{Foo}\ a\ b                      \\[1ex]
 b^{a} &= a → b                                   \\
-1     &= \texttt{()}                             \\
+1     &= \texttt{Foo}                            \\
 0     &= \texttt{Void}                
 \end{align*}
 *** note                                                                                 :B_note:
@@ -676,6 +691,24 @@ x  &= y                      \\
    &= y'' \tag*{reason}      \\
    &= x   \tag*{reason}
 \end{align*}
+** Example
+\fontsize{14}{11}\selectfont
+\begin{align*}
+f ∘ (g ∘ h) &= (f ∘ g) ∘ h                          \\
+            &= (λx → f\ (g\ x)) ∘ h
+               \tag*{\textbf{unfold ∘}}             \\
+            &= λy → (λx → f\ (g\ x))\ (h\ y)
+               \tag*{\textbf{unfold ∘}}             \\
+            &= λy → f\ (g\ (h\ y))
+               \tag*{\textbf{β-reduction}}          \\
+            &= λy → f\ ((g ∘ h)\ y)
+               \tag*{\textbf{fold ∘}}               \\
+            &= λy → (f ∘ (g ∘ h))\ y
+               \tag*{\textbf{fold ∘}}               \\
+            &= f ∘ (g ∘ h)
+               \tag*{\textbf{η-contraction}}        \\
+            &  \tag*{\qed{}}
+\end{align*}
 * Quantification
 ** HEAD
 :PROPERTIES:
@@ -684,9 +717,9 @@ x  &= y                      \\
 :END:
 \head{Quantification}
 ** Existential
-\[ \exists p, P(p) \]
+\[ \exists x, P\ x \]
 ** Universal
-\[ \forall p, P(p) \]
+\[ \forall x, P\ x \]
 ** Universal
 *** True?                                                                          :B_alertblock:
 :PROPERTIES:
@@ -699,6 +732,29 @@ x  &= y                      \\
 :BEAMER_env: alertblock
 :END:
 \forall x, \exists y \rightarrow x \neq y
+** Relationship
+\[ ∃x, φ(x) \ ≡ \ ¬∀x, ¬φ(x) \]
+** As a game
+You can think of quantification like a game between two players, the caller
+and the callee:
+
+- ∀ means the caller gets to decide the object
+- ∃ means the callee gets to decide
+** As a game
+When we prove, or a write a function, we are the callee.  When we call a
+function or apply a lemma, we are the caller.
+** Switching roles
+It's possible to switch roles inside a function:
+
+\[ ∀ x, (∀ y, y → r) → x → r \]
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Show how this is the case.
+** RankNTypes
+In Haskell we call this a Rank-2 function type.  Our computational data types
+made use of them.
 * Parametricity
 ** HEAD
 :PROPERTIES:
@@ -706,7 +762,7 @@ x  &= y                      \\
 :BEAMER_env: frame
 :END:
 \head{Parametricity}
-** Free theorems
+** Theorems for free!
 What does the following type imply (assuming no ⊥)?
 \vspace{1.5ex}
 *** filter                                                                            :B_example:
@@ -741,6 +797,9 @@ It is "proven by construction".
   \vspace{1ex}\hspace{2em}map\ g\ (\textbf{filter}\ p\ xs)
     &= \textbf{filter}\ q\ (map\ g\ xs) &
 \end{flalign*}
+** Why is it free?
+It's not just that the type implies the theorem: Writing such a function is
+also a proof of the theorem.
 ** Free theorem generator
 Automatically generate free theorems for sub-languages of Haskell: \\
 \vspace{1ex}
@@ -753,6 +812,9 @@ http://www-ps.iai.uni-bonn.de/cgi-bin/free-theorems-webui.cgi
 Sub-languages include: no bottoms (hence no general recursion and no selective
 strictness); general recursion but no selective strictness; general recursion
 and selective strictness.
+** Further reading
+\fontsize{14}{11}\selectfont
+http://ttic.uchicago.edu/~dreyer/course/papers/wadler.pdf
 * Curry-Howard Isomorphism
 ** HEAD
 :PROPERTIES:
@@ -760,11 +822,24 @@ and selective strictness.
 :BEAMER_env: frame
 :END:
 \head{Curry-Howard Isomorphism}
-* [Break]
-** [Break]
+** Types are theorems
 \begin{center}
-\includegraphics[width=.9\linewidth]{images/hascat.jpg}
+\begin{tabular}{ l l c || c l r }
+&        & & &          & \\
+& Types  & & & Theorems & \\
+&        & & &          & \\ \hline
+&        & & &          & \\
+& Values & & & Proofs   & \\
+&        & & &          & \\
+\end{tabular}
 \end{center}
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+When we state a type, that's the same as formulating a theorem using the
+language of types.  Finding an inhabitant of that type establishes an
+existence proof for the theorem.
 * Category Theory
 ** HEAD
 :PROPERTIES:
@@ -772,10 +847,46 @@ and selective strictness.
 :BEAMER_env: frame
 :END:
 \head{Category Theory}
-** Sets with structure
+** Structured collections
 \begin{center}
-\includegraphics[width=.65\linewidth]{images/Category1.pdf}
+\includegraphics[width=.9\linewidth]{images/Category1.pdf}
 \end{center}
+** But not sets
+Instead of sets with elements and functions, we have categories with objects
+and morphisms. \\
+\vspace{2ex} \\
+All sets are categories, but not vice-versa.
+** Example: Any set
+\begin{description}[style=nextline]
+  \item[Objects]   Set elements
+  \item[Morphisms] Just the identities (a \textbf{discrete} category)
+\end{description}
+** Example: Posets
+\begin{description}[style=nextline]
+  \item[Objects]     Set elements
+  \item[Morphisms]   Identities and $≤$ between some elements
+  \item[Composition] {\small $(y ≤ z) ∘ (x ≤ y) = (x ≤ z)$}
+\end{description}
+** Example: Graphs
+\begin{description}[style=nextline]
+  \item[Objects]     Vertices
+  \item[Morphisms]   Edges and self-edges (bidirectional if undirected)
+  \item[Composition] In the ``obvious'' way.
+\end{description}
+** Example: Set
+\begin{description}[style=nextline]
+  \item[Objects]     Sets
+  \item[Morphisms]   Functions
+  \item[Composition] Typical
+\end{description}
+** Example: Cat
+\begin{description}[style=nextline]
+  \item[Objects]     Categories
+  \item[Morphisms]   Functors
+  \item[Composition] (As with functions)
+\end{description}
+** Concepts transfer
+One of the beautiful things about category theory is that ideas can transfer.
 * Functors
 ** HEAD
 :PROPERTIES:
