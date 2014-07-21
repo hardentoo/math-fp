@@ -956,6 +956,13 @@ And yet, all of this is rooted in a profound simplicity.
 :BEAMER_env: note
 :END:
 In Haskell, this is called Const.
+** Definition in code
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+class Functor f where
+  fmap :: (a -> b) -> (f a -> f b)
+\end{lstlisting}
+#+END_LaTeX
 ** Functor laws
 *** 1. Identity law                                                                :B_definition:
 :PROPERTIES:
@@ -1109,7 +1116,7 @@ Remember how free functors were encoded as functions?  This extends to *any*
 functor:
 
 \[ f\ a \ ≅ \ ∀ r, (a → r) → f\ r \]
-** The isomorphism
+** Exercise
 \fontsize{14}{16}\selectfont
 \vspace{-2ex}
 \begin{align*}
@@ -1140,6 +1147,68 @@ instance Functor (Yoneda f) where
 Identity as a concept can be used to implement "taintedness", to force
 laziness, to provide singletons, and more.  As should be clear by now, the
 simplicity of a core idea can be misleading.
+** Concepts lift
+A lot of what we know about values can be lifted to functors.
+** Lifted Identity
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data IdentityF f a
+    = IdentityF (f a)
+\end{lstlisting}
+#+END_LaTeX
+** Lifted Maybe
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data MaybeF f a
+    = NothingF a | Just (f a)
+\end{lstlisting}
+#+END_LaTeX
+** Lifted Either
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data EitherF f g a
+    = LeftF (f a) | RightF (g a)
+\end{lstlisting}
+#+END_LaTeX
+** Lifted Tuple
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data TupleF f a
+    = TupleF (f (f a))
+\end{lstlisting}
+#+END_LaTeX
+** Lifted List
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data ListF f a
+    = NilF a
+    | ListF (f (ListF f a))
+\end{lstlisting}
+#+END_LaTeX
+** Free Monad
+We could rename the constructors of our lifted list:
+
+#+BEGIN_LaTeX
+\vspace{2ex}
+\begin{lstlisting}[language=Haskell]
+data FreeMonad m a
+    = Return a
+    | Join (m (FreeMonad m a))
+\end{lstlisting}
+#+END_LaTeX
+** Famous quote
+\begin{quotation}
+\noindent ``A monad is just a monoid in the category of endofunctors, what's the
+problem?'' \\
+-- Saunders Mac Lane
+\end{quotation}
+
+\vspace{2ex}Likewise, our free monad is just a free monoid over functors.
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+We're not going to discuss this just now, but we're going to come back it.
 * Applicatives
 ** HEAD
 :PROPERTIES:
@@ -1147,6 +1216,23 @@ simplicity of a core idea can be misleading.
 :BEAMER_env: frame
 :END:
 \head{Applicatives}
+** Definition in code
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+class Applicative f where
+  pure  :: f a
+  (<*>) :: f (a -> b) -> f a -> f b
+\end{lstlisting}
+#+END_LaTeX
+** Important
+One aspect of \texttt{Applicative} gives a clue to its power:
+
+\vspace{2ex}The \texttt{<*>} operator takes *two* functorial arguments.
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+This is not true of either Functor or Monad.
 ** Applicative laws
 *** 1. Identity law                                                                :B_definition:
 :PROPERTIES:
@@ -1176,7 +1262,7 @@ simplicity of a core idea can be misleading.
 :BEAMER_act: <2->
 :BEAMER_env: definition
 :END:
-\( fmap\ f\ x = pure\ f ⊗ x \)
+\( pure\ f ⊗ x = fmap\ f\ x \)
 ** Identity                                                                           :B_example:
 :PROPERTIES:
 :BEAMER_env: example
@@ -1200,7 +1286,8 @@ data Identity a = Identity a
 
 instance Applicative Identity where
     pure x = Identity x
-    Identity f <*> Identity x = Identity (f x)
+    Identity f <*> Identity x
+        = Identity (f x)
 \end{lstlisting}
 #+END_LaTeX
 ** Proving Identity
@@ -1484,6 +1571,10 @@ Why can't it be a monad?
 :BEAMER_env: frame
 :END:
 \head{Free Monads}
+* The End
+\begin{center}
+\includegraphics[width=\linewidth]{images/this-meeting-is-over_3.jpg}
+\end{center}
 * Colophon
 
 #+STARTUP: beamer
