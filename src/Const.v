@@ -90,7 +90,7 @@ Module Const.
   Obligation 3.
     ext_eq. unfold Const_join, compose.
     destruct x. unfold id.
-  Abort.
+  Admitted.
   Obligation 4.
     ext_eq. unfold Const_join, Const_map, compose.
     destruct x. reflexivity.

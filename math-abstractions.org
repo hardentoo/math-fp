@@ -296,8 +296,8 @@ Laws restrict how functions and values relate to each other.
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
 class Monoid a where
-    mempty  :: a
-    mappend :: a -> a -> a
+  mempty  :: a
+  mappend :: a -> a -> a
 \end{lstlisting}
 #+END_LaTeX
 *** note                                                                                 :B_note:
@@ -321,7 +321,7 @@ Behold, the face of evil:
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
 class Pointed a where
-    point :: a
+  point :: a
 \end{lstlisting}
 #+END_LaTeX
 * [Questions?]
@@ -357,10 +357,10 @@ The set of laws is empty!
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
 class Magma a where
-    binop :: a -> a -> a
+  binop :: a -> a -> a
 
 instance Magma Integer where
-    binop = (+)
+  binop = (+)
 \end{lstlisting}
 #+END_LaTeX
 ** Semigroup
@@ -377,7 +377,7 @@ Laws:
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
 class Semigroup a where
-    (<>) :: a -> a -> a
+  (<>) :: a -> a -> a
 \end{lstlisting}
 #+END_LaTeX
 *** Semigroup law
@@ -405,8 +405,8 @@ Laws:
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
 class Monoid a where
-    mempty  :: a
-    mappend :: a -> a -> a
+  mempty  :: a
+  mappend :: a -> a -> a
 \end{lstlisting}
 #+END_LaTeX
 *** Monoid laws                                                                    :B_definition:
@@ -467,8 +467,8 @@ data MV a = MEmpty
           | MAppend (MV a) (MV a)
 
 instance Monoid (MV a) where
-    mempty  = MEmpty
-    mappend = MAppend 
+  mempty  = MEmpty
+  mappend = MAppend 
 \end{lstlisting}
 #+END_LaTeX
 ** Building trees
@@ -560,9 +560,9 @@ Every free object is trivially a functor, called a free functor.
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
 instance Functor List where
-    fmap _ Nil = Nil
-    fmap f (Cons x xs)
-        = Cons (f x) (fmap f xs)
+  fmap _ Nil = Nil
+  fmap f (Cons x xs)
+    = Cons (f x) (fmap f xs)
 \end{lstlisting}
 #+END_LaTeX
 ** F-algebras
@@ -1007,7 +1007,7 @@ required categories.
 data Identity a = Identity a
 
 instance Functor Identity where
-    fmap f (Identity x) = ?
+  fmap f (Identity x) = ?
 \end{lstlisting}
 #+END_LaTeX
 *** note                                                                                 :B_note:
@@ -1026,7 +1026,8 @@ simplicity of a core idea can be misleading.
 data Identity a = Identity a
 
 instance Functor Identity where
-    fmap f (Identity x) = Identity (f x)
+  fmap f (Identity x)
+    = Identity (f x)
 \end{lstlisting}
 #+END_LaTeX
 ** Proving Identity Law
@@ -1067,8 +1068,8 @@ id\ ({\tt Identity\ x′}) &= fmap\ id\ ({\tt Identity\ x′})
 data Maybe a = Nothing | Just a
 
 instance Functor Maybe where
-    fmap f Nothing  = ?
-    fmap f (Just x) = ?
+  fmap f Nothing  = ?
+  fmap f (Just x) = ?
 \end{lstlisting}
 #+END_LaTeX
 ** Maybe                                                                              :B_example:
@@ -1080,8 +1081,8 @@ instance Functor Maybe where
 data Maybe a = Nothing | Just a
 
 instance Functor Maybe where
-    fmap f Nothing  = Nothing
-    fmap f (Just x) = Just (f x)
+  fmap f Nothing  = Nothing
+  fmap f (Just x) = Just (f x)
 \end{lstlisting}
 #+END_LaTeX
 ** Either                                                                             :B_example:
@@ -1120,8 +1121,7 @@ functor:
 \fontsize{14}{16}\selectfont
 \vspace{-2ex}
 \begin{align*}
-\texttt{lower} & \ :: \ (∀ r.\ (a → r) → f\ r) \ → \ f\ a                    \\
-               &                                                             \\
+\texttt{lower} & \ :: \ (∀ r.\ (a → r) → f\ r) \ → \ f\ a                    \\[1ex]
 \texttt{lift}  & \ :: \ \texttt{Functor}\ f \ ⇒ \ f\ a \ → \ (a → r) → f\ r
 \end{align*}
 ** Yoneda lemma
@@ -1134,15 +1134,15 @@ A Yoneda embedding is itself a *Functor*:
 \lstset{basicstyle=\footnotesize\ttfamily}
 \begin{lstlisting}[language=Haskell]
 data Yoneda f a
-    = Yoneda (forall r. (a -> r) -> f r)
+  = Yoneda (forall r. (a -> r) -> f r)
 
 instance Functor (Yoneda f) where
-    fmap g (Yoneda k) = ?
+  fmap g (Yoneda k) = ?
 \end{lstlisting}
 #+END_LaTeX
 ** fmap optimization
 One thing Yoneda buys us (among others) is optimization of repeated calls to
-\textff{fmap}.
+\texttt{fmap}.
 *** note                                                                                 :B_note:
 :PROPERTIES:
 :BEAMER_env: note
@@ -1156,36 +1156,36 @@ A lot of what we know about values can be lifted to functors.
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
 data IdentityF f a
-    = IdentityF (f a)
+  = IdentityF (f a)
 \end{lstlisting}
 #+END_LaTeX
 ** Lifted Maybe
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
 data MaybeF f a
-    = NothingF a | Just (f a)
+  = NothingF a | Just (f a)
 \end{lstlisting}
 #+END_LaTeX
 ** Lifted Either
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
 data EitherF f g a
-    = LeftF (f a) | RightF (g a)
+  = LeftF (f a) | RightF (g a)
 \end{lstlisting}
 #+END_LaTeX
 ** Lifted Tuple
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
 data TupleF f a
-    = TupleF (f (f a))
+  = TupleF (f (f a))
 \end{lstlisting}
 #+END_LaTeX
 ** Lifted List
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
 data ListF f a
-    = NilF a
-    | ListF (f (ListF f a))
+  = NilF a
+  | ListF (f (ListF f a))
 \end{lstlisting}
 #+END_LaTeX
 ** Free Monad
@@ -1195,8 +1195,8 @@ We could rename the constructors of our lifted list:
 \vspace{2ex}
 \begin{lstlisting}[language=Haskell]
 data FreeMonad m a
-    = Return a
-    | Join (m (FreeMonad m a))
+  = Return a
+  | Join (m (FreeMonad m a))
 \end{lstlisting}
 #+END_LaTeX
 ** Famous quote
@@ -1275,8 +1275,8 @@ This is not true of either Functor or Monad.
 data Identity a = Identity a
 
 instance Applicative Identity where
-    pure x = Identity x
-    Identity f <*> Identity x = ?
+  pure x = Identity x
+  Identity f <*> Identity x = ?
 \end{lstlisting}
 #+END_LaTeX
 ** Identity                                                                           :B_example:
@@ -1288,9 +1288,9 @@ instance Applicative Identity where
 data Identity a = Identity a
 
 instance Applicative Identity where
-    pure x = Identity x
-    Identity f <*> Identity x
-        = Identity (f x)
+  pure x = Identity x
+  Identity f <*> Identity x
+    = Identity (f x)
 \end{lstlisting}
 #+END_LaTeX
 ** Proving Identity
@@ -1328,12 +1328,12 @@ instance Applicative Identity where
 data Maybe a = Nothing | Just a
 
 instance Applicative Maybe where
-    pure x = ?
+  pure x = ?
 
-    Nothing <*> Nothing = ?
-    Just f  <*> Nothing = ?
-    Nothing <*> Just x  = ?
-    Just f  <*> Just x  = ?
+  Nothing <*> Nothing = ?
+  Just f  <*> Nothing = ?
+  Nothing <*> Just x  = ?
+  Just f  <*> Just x  = ?
 \end{lstlisting}
 #+END_LaTeX
 ** Maybe                                                                              :B_example:
@@ -1345,10 +1345,10 @@ instance Applicative Maybe where
 data Maybe a = Nothing | Just a
 
 instance Applicative Maybe where
-    pure x = ?
+  pure x = ?
 
-    Just f <*> Just x = Just (f x)
-    _      <*> _      = Nothing
+  Just f <*> Just x = Just (f x)
+  _      <*> _      = Nothing
 \end{lstlisting}
 #+END_LaTeX
 ** Either                                                                             :B_example:
@@ -1370,21 +1370,10 @@ data Pair p a = Pair p a
 \end{lstlisting}
 #+END_LaTeX
 ** Const                                                                              :B_example:
-:PROPERTIES:
-:BEAMER_env: example
-:END:
-**Const** requires a trickier instance.
-\vspace{1.5ex}
-#+BEGIN_LaTeX
-\begin{lstlisting}[language=Haskell]
-data Const c a = Const c
+** Analysis
+Applicatives are great for doing expression analysis.
 
-instance Monoid c
-    => Applicative (Const c) where
-    pure x = ?
-    Const a <*> Const b = ?
-\end{lstlisting}
-#+END_LaTeX
+\vspace{2ex}Example: Minimizing expensive key lookups.
 * [Break]
 ** [Break]
 \begin{center}
@@ -1403,9 +1392,11 @@ instance Monoid c
 :BEAMER_env: definition
 :END:
 #+BEGIN_LaTeX
+\lstset{basicstyle=\footnotesize\ttfamily}
 \begin{lstlisting}[language=Haskell]
-return :: m a
-(>>=)  :: m a -> (a -> m b) -> m b
+class Monad m where
+  return :: m a
+  (>>=)  :: m a -> (a -> m b) -> m b
 \end{lstlisting}
 #+END_LaTeX
 *** Using join                                                                     :B_definition:
@@ -1414,9 +1405,10 @@ return :: m a
 :BEAMER_env: definition
 :END:
 #+BEGIN_LaTeX
+\lstset{basicstyle=\footnotesize\ttfamily}
 \begin{lstlisting}[language=Haskell]
-return :: m a
-join   :: m (m a) -> m a
+  return :: m a
+  join   :: m (m a) -> m a
 \end{lstlisting}
 #+END_LaTeX
 ** Bind in terms of join                                                           :B_definition:
@@ -1459,7 +1451,7 @@ m >>= f = join (fmap f m)
 data Identity a = Identity a
 
 instance Functor Identity where
-    Identity m >>= f = ?
+  Identity m >>= f = ?
 \end{lstlisting}
 #+END_LaTeX
 *** note                                                                                 :B_note:
@@ -1478,7 +1470,7 @@ simplicity of a core idea can be misleading.
 data Identity a = Identity a
 
 instance Functor Identity where
-    Identity m >>= f = f m
+  Identity m >>= f = f m
 \end{lstlisting}
 #+END_LaTeX
 ** Proving Left Identity
@@ -1527,8 +1519,8 @@ instance Functor Identity where
 data Maybe a = Nothing | Just a
 
 instance Functor Maybe where
-    Nothing >>= f = ?
-    Just x  >>= f = ?
+  Nothing >>= f = ?
+  Just x  >>= f = ?
 \end{lstlisting}
 #+END_LaTeX
 ** Maybe                                                                              :B_example:
@@ -1540,8 +1532,8 @@ instance Functor Maybe where
 data Maybe a = Nothing | Just a
 
 instance Functor Maybe where
-    Nothing >>= f = Nothing
-    Just x  >>= f = Just (f x)
+  Nothing >>= f = Nothing
+  Just x  >>= f = Just (f x)
 \end{lstlisting}
 #+END_LaTeX
 ** Either                                                                             :B_example:
@@ -1572,6 +1564,13 @@ Why can't it be a monad?
 :BEAMER_env: note
 :END:
 Because Const (Const a) does not preserve the value from the inner Const.
+* Monad Transformers
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Monad Transformers}
 * Free Monads
 ** HEAD
 :PROPERTIES:
@@ -1579,6 +1578,13 @@ Because Const (Const a) does not preserve the value from the inner Const.
 :BEAMER_env: frame
 :END:
 \head{Free Monads}
+* Applicative Composition
+** HEAD
+:PROPERTIES:
+:BEAMER_opt: plain
+:BEAMER_env: frame
+:END:
+\head{Applicative Composition}
 * The End
 \begin{center}
 \includegraphics[width=\linewidth]{images/this-meeting-is-over_3.jpg}

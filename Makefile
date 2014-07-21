@@ -1,13 +1,11 @@
-PYTHON = /usr/bin/python
-
-PRESENT = /Applications/Misc/Présentation.app/Contents/MacOS/presentation.py
-
-PDF = math-abstractions.pdf
-
-IMAGES = images/Codomain2.pdf
+PYTHON	 = /usr/bin/python
+PRESENT	 = /Applications/Misc/Présentation.app/Contents/MacOS/presentation.py
+PDF	 = math-abstractions.pdf
+IMAGES	 = images/Codomain2.pdf
+COQFLAGS = "-I $(HOME)/src/category-theory/Endo"
 
 all: $(IMAGES) $(PDF) Makefile.coq html
-	make -f Makefile.coq COQFLAGS="-I $(HOME)/src/category-theory/Endo"
+	make -f Makefile.coq COQFLAGS=$(COQFLAGS)
 
 open: $(PDF)
 	open $<
@@ -16,7 +14,7 @@ present: all
 	$(PYTHON) $(PRESENT) $(PDF)
 
 html: Makefile.coq
-	make -f Makefile.coq html
+	make -f Makefile.coq COQFLAGS=$(COQFLAGS) html
 
 Makefile.coq: src/*.v
 	coq_makefile  . src/*.v > Makefile.coq
