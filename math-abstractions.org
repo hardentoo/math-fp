@@ -1559,11 +1559,16 @@ data Left e a = Left e | Right a
 data Pair p a = Pair p a
 \end{lstlisting}
 #+END_LaTeX
-** Const                                                                              :B_example:
+** Exercise: Const                                                                    :B_example:
 :PROPERTIES:
 :BEAMER_env: example
 :END:
 Why can't it be a monad?
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+Because Const (Const a) does not preserve the value from the inner Const.
 * Free Monads
 ** HEAD
 :PROPERTIES:
