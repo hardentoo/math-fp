@@ -39,4 +39,4 @@ images/%.pdf: images/%.svg
 clean:
 	rm -fr html
 	rm -f *.tex *.pdf *.vrb *.aux *.log *.nav *.out *.snm *.toc *.upa
-	rm -f *.d *.vo *.glob Makefile.coq
+	rm -f src/*.d src/*.vo src/*.glob Makefile.coq

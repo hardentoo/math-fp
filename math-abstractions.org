@@ -1212,6 +1212,11 @@ problem?'' \\
 :BEAMER_env: note
 :END:
 We're not going to discuss this just now, but we're going to come back it.
+* [Break]
+** [Break]
+\begin{center}
+\includegraphics[width=.9\linewidth]{images/monad-tutorial.jpg}
+\end{center}
 * Applicatives
 ** HEAD
 :PROPERTIES:
@@ -1311,7 +1316,7 @@ instance Applicative Identity where
 ** Proving Homomorphism
 \fontsize{12}{16}\selectfont
 \begin{align*}
- &  \hspace{1.3em}pure\ f ⊗ pure\ x                 \\
+ &  \hspace{1.3em}pure\ f ⊗ pure\ x                  \\
  &= {\tt Identity}\ f ⊗ {\tt Identity}\ x
     \tag*{\textbf{defn. {\tt pure}}}                 \\
  &= {\tt Identity}\ (f(x))
@@ -1371,14 +1376,14 @@ data Pair p a = Pair p a
 #+END_LaTeX
 ** Const                                                                              :B_example:
 ** Analysis
-Applicatives are great for doing expression analysis.
+Applicatives allow for expression analysis.
 
-\vspace{2ex}Example: Minimizing expensive key lookups.
-* [Break]
-** [Break]
-\begin{center}
-\includegraphics[width=.9\linewidth]{images/monad-tutorial.jpg}
-\end{center}
+\vspace{2ex}\textbf{Example}: Minimizing expensive key lookups.
+** Composition
+Another useful trait is that applicatives compose well.
+
+\fontsize{14}{16}\selectfont
+\vspace{2ex}http://comonad.com/reader/2012/abstracting-with-applicatives
 * Monads
 ** HEAD
 :PROPERTIES:
@@ -1386,27 +1391,24 @@ Applicatives are great for doing expression analysis.
 :BEAMER_env: frame
 :END:
 \head{Monads}
-** Two formulations
-*** Using bind                                                                     :B_definition:
-:PROPERTIES:
-:BEAMER_env: definition
-:END:
+** Definition in code
 #+BEGIN_LaTeX
-\lstset{basicstyle=\footnotesize\ttfamily}
 \begin{lstlisting}[language=Haskell]
 class Monad m where
   return :: m a
-  (>>=)  :: m a -> (a -> m b) -> m b
+  (>>=)  :: m a -> (a -> m b) ->
+            m b
 \end{lstlisting}
 #+END_LaTeX
-*** Using join                                                                     :B_definition:
+*** note                                                                                 :B_note:
 :PROPERTIES:
-:BEAMER_act: <2->
-:BEAMER_env: definition
+:BEAMER_env: note
 :END:
+And this is all that monads are!
+** Definition in code (join)
 #+BEGIN_LaTeX
-\lstset{basicstyle=\footnotesize\ttfamily}
 \begin{lstlisting}[language=Haskell]
+class Monad m where
   return :: m a
   join   :: m (m a) -> m a
 \end{lstlisting}
@@ -1421,27 +1423,117 @@ class Monad m where
 :END:
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
-m >>= f = join (fmap f m)
+    m >>= f  =  join (fmap f m)
 \end{lstlisting}
 #+END_LaTeX
+** How bind works
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+             m  :: m a
+           f    ::   a -> m b
+      fmap f    :: m a -> m (m b)
+      fmap f m  :: m (m b)
+join (fmap f m) :: m b
+\end{lstlisting}
+#+END_LaTeX
+** Not fmap
+Differs from fmap in that a new \texttt{m} was created.
 ** Monad laws
 *** 1. Left identity law                                                           :B_definition:
 :PROPERTIES:
 :BEAMER_env: definition
 :END:
-\( return\ a >>= f = f a \)
+\( \texttt{return}\ a\ \text{\texttt{\normalsize >>=}}\ f \color{red}=\color{black} f\ a \)
 *** 2. Right identity Law                                                          :B_definition:
 :PROPERTIES:
 :BEAMER_act: <2->
 :BEAMER_env: definition
 :END:
-\( m >>= return = m \)
+\( m \ \text{\texttt{\normalsize >>=}}\ \texttt{return} \color{red}=\color{black} m \)
 *** 3. Associativity Law                                                           :B_definition:
 :PROPERTIES:
 :BEAMER_act: <3->
 :BEAMER_env: definition
 :END:
-\( (m >>= f) >>= g = m >>= (λx → f\ x >>= g) \)
+\( (m \ \text{\texttt{\normalsize >>=}}\ f) \ \text{\texttt{\normalsize >>=}}\ g \color{red}=\color{black}
+    m \ \text{\texttt{\normalsize >>=}}\ λx → f\ x \ \text{\texttt{\normalsize >>=}}\ g \)
+** Monadic composition
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\lstset{keywordstyle=\color{black}}
+\begin{lstlisting}[language=Haskell]
+f >=> g  =  \x -> f x >>= g
+
+g <=< f  =  \x -> g =<< f x
+\end{lstlisting}
+#+END_LaTeX
+** Monad laws (form 2)
+*** 1. Left identity law (alt)                                                     :B_definition:
+:PROPERTIES:
+:BEAMER_env: definition
+:END:
+\( \texttt{return}\ \text{\texttt{\small >=>}}\ f \color{red}=\color{black} f \)
+*** 2. Right identity Law (alt)                                                    :B_definition:
+:PROPERTIES:
+:BEAMER_act: <2->
+:BEAMER_env: definition
+:END:
+\( f\ \text{\texttt{\small >=>}}\ \texttt{return} \color{red}=\color{black} f \)
+*** 3. Associativity Law (alt)                                                     :B_definition:
+:PROPERTIES:
+:BEAMER_act: <3->
+:BEAMER_env: definition
+:END:
+\( (f\ \text{\texttt{\small >=>}}\ g)\ \text{\texttt{\small >=>}}\ h \color{red}=\color{black} f\ \text{\texttt{\small >=>}}\ (g\ \text{\texttt{\small >=>}}\ h) \)
+** Chaining
+Monads allow us to chain computations.
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+x >>= f >>= g >>= >>= h
+\end{lstlisting}
+#+END_LaTeX
+** Chaining
+Haskell has a special notation for this:
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+do a <- x
+   b <- f a
+   c <- g b
+   h c
+\end{lstlisting}
+#+END_LaTeX
+** Desugared
+This is just sugar for:
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+  (x   >>= \a ->
+   f a >>= \b ->
+   g b >>= \c ->
+   h c)
+\end{lstlisting}
+#+END_LaTeX
+** Thinking about join
+When implementing a new Monad, ask yourself: What does it mean to ``multiply''
+two contexts?
 ** Identity                                                                           :B_example:
 :PROPERTIES:
 :BEAMER_env: example
@@ -1474,7 +1566,7 @@ instance Functor Identity where
 \end{lstlisting}
 #+END_LaTeX
 ** Proving Left Identity
-\fontsize{12}{16}\selectfont
+\fontsize{14}{17}\selectfont
 \begin{align*}
  &  \hspace{1.3em}return\ {\tt a} >>= f              \\
  &= {\tt Identity\ a} >>= f
@@ -1483,7 +1575,7 @@ instance Functor Identity where
     \tag*{\textbf{defn. {\tt >>=}}}
 \end{align*}
 ** Proving Right Identity
-\fontsize{12}{16}\selectfont
+\fontsize{14}{17}\selectfont
 \begin{align*}
  &  \hspace{1.3em}{\tt m} >>= return                 \\
  &= {\tt Identity\ m′} >>= return
@@ -1549,6 +1641,8 @@ data Left e a = Left e | Right a
 :PROPERTIES:
 :BEAMER_env: example
 :END:
+What additional constraint is needed to make this a Monad, and why?
+
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
 data Pair p a = Pair p a
@@ -1564,6 +1658,53 @@ Why can't it be a monad?
 :BEAMER_env: note
 :END:
 Because Const (Const a) does not preserve the value from the inner Const.
+** Reader
+Functions are functors, applicatives and monads too.  As a monad, it's often
+called \texttt{Reader}.
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+instance Monad ((->) a) where
+  return x = ?
+  k >>= f  = ?
+\end{lstlisting}
+#+END_LaTeX
+** Writer
+The \texttt{Writer} monad directly expresses the monoid nature of monads.
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+newtype Writer w a
+  = Writer { runW :: (a, w) }
+
+instance Monoid w
+    => Monad (Writer w) where
+  return x = ?
+  k >>= f  = ?
+\end{lstlisting}
+#+END_LaTeX
+** State
+\texttt{State} is prototypical of what monads are about.
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+newtype State s a
+  = State { runS :: s -> (a, s) }
+
+instance Monad (State s) where
+  return x = ?
+  k >>= f  = ?
+\end{lstlisting}
+#+END_LaTeX
 * Monad Transformers
 ** HEAD
 :PROPERTIES:
@@ -1578,13 +1719,6 @@ Because Const (Const a) does not preserve the value from the inner Const.
 :BEAMER_env: frame
 :END:
 \head{Free Monads}
-* Applicative Composition
-** HEAD
-:PROPERTIES:
-:BEAMER_opt: plain
-:BEAMER_env: frame
-:END:
-\head{Applicative Composition}
 * The End
 \begin{center}
 \includegraphics[width=\linewidth]{images/this-meeting-is-over_3.jpg}
