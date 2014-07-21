@@ -596,6 +596,15 @@ make otherwise recursive algorithms much simpler to write.
 Every free functor can be modeled as a computation rather than as an ADT:
 
 \[ \texttt{List}\ a \ ≅ \ ∀ r, r → (a → r → r) → r \]
+** Proving isomorphism
+Proof of an isomorphism requires four things:
+
+1. Write a $\texttt{to}$ function.
+2. Write a $\texttt{from}$ function.
+3. Show: $∀ x, to\ (from\ x) = x$.
+4. Show: $∀ y, from\ (to\ y) = y$.
+** QuickCheck
+In lieu of real proofs, we can sometimes pick types and just use QuickCheck.
 ** Exercise
 Prove the following isomorphisms:
 \begin{align*}
@@ -832,14 +841,7 @@ and selective strictness.
 ** Further reading
 \fontsize{14}{16}\selectfont
 http://ttic.uchicago.edu/~dreyer/course/papers/wadler.pdf
-* Curry-Howard Isomorphism
-** HEAD
-:PROPERTIES:
-:BEAMER_opt: plain
-:BEAMER_env: frame
-:END:
-\head{Curry-Howard Isomorphism}
-** Types are theorems
+** Curry-Howard Isomorphism
 \begin{center}
 \begin{tabular}{ l l c || c l r }
 &        & & &          & \\
@@ -865,11 +867,11 @@ constructing proofs all the time without realizing it.
 :BEAMER_env: frame
 :END:
 \head{Category Theory}
-** Structured collections
+** Category
 \begin{center}
 \includegraphics[width=.9\linewidth]{images/Category1.pdf}
 \end{center}
-** But not sets
+** Not all sets
 Instead of sets with elements and functions, we have categories with objects
 and morphisms.
 
@@ -915,9 +917,18 @@ and morphisms.
   \item[Morphisms]   Natural transformations
   \item[Composition] As polymorphic functions
 \end{description}
-** Many, many categories
+** Many categories
 Any book on category theory will have many more examples of categories than
 these few.
+** Some books
+- Lawvere, /Conceptual Mathematics: A First Introduction to Categories/
+- Awodey, /Category Theory/
+- Mac Lane, /Categories for the Working Mathematician/
+** Other resources
+- Catster's videos: \\
+  \small http://byorgey.wordpress.com/catsters-guide-2 \normalsize
+- Awodey's presentation on Category Theory at OPLSS 2013
+- ##categorytheory on IRC
 ** Concepts transfer
 One of the profound concepts in category theory is how ideas transfer.
 *** note                                                                                 :B_note:
@@ -934,11 +945,11 @@ And yet, all of this is rooted in a profound simplicity.
 \head{Functors}
 ** Categorical model
 \begin{center}
-\includegraphics[width=.9\linewidth]{images/Functors1.pdf}
+\includegraphics[width=\linewidth]{images/Functors1.pdf}
 \end{center}
 ** Unit mapping
 \begin{center}
-\includegraphics[width=.9\linewidth]{images/Functors2.pdf}
+\includegraphics[width=\linewidth]{images/Functors2.pdf}
 \end{center}
 *** note                                                                                 :B_note:
 :PROPERTIES:
@@ -958,7 +969,7 @@ In Haskell, this is called Const.
 :END:
 \( fmap\ (f ∘ g) = fmap\ f ∘ fmap\ g \)
 ** Not containers!
-A *Functor* sometimes maps to:
+A *Functor* can sometimes map to:
 - a container
 - a computation
 \dots{}but a *Functor* /per se/ is neither.
