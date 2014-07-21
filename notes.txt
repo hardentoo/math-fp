@@ -1,1 +1,5 @@
-Slides: Yoneda, fmap composition.
+Other things we could discuss:
+
+- Free monads
+- Applicative composition
+- Monad transformers

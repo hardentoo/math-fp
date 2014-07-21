@@ -1140,6 +1140,9 @@ instance Functor (Yoneda f) where
     fmap g (Yoneda k) = ?
 \end{lstlisting}
 #+END_LaTeX
+** fmap optimization
+One thing Yoneda buys us (among others) is optimization of repeated calls to
+\textff{fmap}.
 *** note                                                                                 :B_note:
 :PROPERTIES:
 :BEAMER_env: note
