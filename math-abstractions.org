@@ -1628,6 +1628,8 @@ instance Functor Maybe where
   Just x  >>= f = Just (f x)
 \end{lstlisting}
 #+END_LaTeX
+** Maybe
+\texttt{Maybe} gives us a way to short-circuiting a chain of computations.
 ** Either                                                                             :B_example:
 :PROPERTIES:
 :BEAMER_env: example
@@ -1637,15 +1639,32 @@ instance Functor Maybe where
 data Left e a = Left e | Right a
 \end{lstlisting}
 #+END_LaTeX
+** Either
+\texttt{Either} lets us short-circuit with an alternate result.
 ** Tuple                                                                              :B_example:
 :PROPERTIES:
 :BEAMER_env: example
 :END:
 What additional constraint is needed to make this a Monad, and why?
-
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
-data Pair p a = Pair p a
+data Pair w a = Pair w a
+\end{lstlisting}
+#+END_LaTeX
+** Tuple
+Tuples form the Writer monad, if we write one more function:
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+tell :: w -> Pair w ()
+tell w = ?
 \end{lstlisting}
 #+END_LaTeX
 ** Exercise: Const                                                                    :B_example:
@@ -1672,23 +1691,6 @@ instance Monad ((->) a) where
   k >>= f  = ?
 \end{lstlisting}
 #+END_LaTeX
-** Writer
-The \texttt{Writer} monad directly expresses the monoid nature of monads.
-*** \vspace*{-3.5ex}                                                                  :B_example:
-:PROPERTIES:
-:BEAMER_env: example
-:END:
-#+BEGIN_LaTeX
-\begin{lstlisting}[language=Haskell]
-newtype Writer w a
-  = Writer { runW :: (a, w) }
-
-instance Monoid w
-    => Monad (Writer w) where
-  return x = ?
-  k >>= f  = ?
-\end{lstlisting}
-#+END_LaTeX
 ** State
 \texttt{State} is prototypical of what monads are about.
 *** \vspace*{-3.5ex}                                                                  :B_example:
@@ -1705,20 +1707,39 @@ instance Monad (State s) where
   k >>= f  = ?
 \end{lstlisting}
 #+END_LaTeX
-* Monad Transformers
-** HEAD
+** State
+\texttt{State} is made useful by two more functions, \texttt{put} and
+\texttt{get}.
+*** \vspace*{-3.5ex}                                                                  :B_example:
 :PROPERTIES:
-:BEAMER_opt: plain
-:BEAMER_env: frame
+:BEAMER_env: example
 :END:
-\head{Monad Transformers}
-* Free Monads
-** HEAD
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+put :: s -> State s ()
+put s = ?
+
+get :: State s s
+get = ?
+\end{lstlisting}
+#+END_LaTeX
+** Silly example
+*** \vspace*{-3.5ex}                                                                  :B_example:
 :PROPERTIES:
-:BEAMER_opt: plain
-:BEAMER_env: frame
+:BEAMER_env: example
 :END:
-\head{Free Monads}
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+let f x = when (even x) $ do
+        y <- get
+        put (x + y)
+in flip execState 0 $
+   mapM_ f [1,2,3,4,5]
+\end{lstlisting}
+#+END_LaTeX
+** Free Monads
+With free monads, we can defer the choice of return and bind, allowing us to
+model computations.
 * The End
 \begin{center}
 \includegraphics[width=\linewidth]{images/this-meeting-is-over_3.jpg}
