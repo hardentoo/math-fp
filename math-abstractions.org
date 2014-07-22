@@ -172,8 +172,7 @@ Examples of injective things:
 
 \[ f\ x = y \]
 ** Surjective
-A function is surjective if the set of possible results is not a subset of its
-type.  Example:
+A function is surjective if the codomain and range are equal.  Example:
 
 - \texttt{even} is surjective
 - \texttt{times2} is not
@@ -546,6 +545,12 @@ to be removed by appending an inverse value.
 ** Folding
 Choosing operations for an algebra is equivalent to folding over its free
 object.
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+That is, instead of adding numbers together, I can equivalently build up a
+list of numbers and then apply a fold to sum them.
 ** Evaluators
 The two essential aspects of an algebra are:
 
@@ -581,8 +586,8 @@ sum (Cons x xs) = x + sum xs
 \end{lstlisting}
 #+END_LaTeX
 ** Recursion schemes
-We won't cover it, but the recursion can be abstracted away for an even more
-general form: \\
+We won't cover it, but the recursion can be abstracted away for even more
+generality: \\
 \vspace{1ex}
 \fontsize{14}{14}\selectfont
 https://www.fpcomplete.com/user/bartosz/understanding-algebras
@@ -593,7 +598,7 @@ https://www.fpcomplete.com/user/bartosz/understanding-algebras
 This can have speed benefits by improving optimization opportunities, and can
 make otherwise recursive algorithms much simpler to write.
 ** Computational structures
-Every free functor can be modeled as a computation rather than as an ADT:
+Every free functor can be modeled as a computation rather than a data type:
 
 \[ \texttt{List}\ a \ ≅ \ ∀ r, r → (a → r → r) → r \]
 ** Proving isomorphism
@@ -604,7 +609,7 @@ Proof of an isomorphism requires four things:
 3. Show: $∀ x, to\ (from\ x) = x$.
 4. Show: $∀ y, from\ (to\ y) = y$.
 ** QuickCheck
-In lieu of real proofs, we can sometimes pick types and just use QuickCheck.
+In lieu of real proofs, we can sometimes just pick types and use QuickCheck.
 ** Exercise
 Prove the following isomorphisms:
 \begin{align*}
@@ -824,8 +829,8 @@ polymorphic programming in functional languages.
     &= \textbf{filter}\ q\ (map\ g\ xs) &
 \end{flalign*}
 ** Why is it free?
-It's not just that the type implies the theorem: Writing such a function is
-also a proof of the theorem.
+It's not just that the type implies the theorem: Writing such a function is a
+proof of that theorem.
 ** Free theorem generator
 Automatically generate free theorems for sub-languages of Haskell: \\
 \vspace{1ex}
@@ -839,6 +844,8 @@ Sub-languages include: no bottoms (hence no general recursion and no selective
 strictness); general recursion but no selective strictness; general recursion
 and selective strictness.
 ** Further reading
+"Theorems for free!"
+\vspace{1ex}
 \fontsize{14}{16}\selectfont
 http://ttic.uchicago.edu/~dreyer/course/papers/wadler.pdf
 ** Curry-Howard Isomorphism
@@ -891,7 +898,7 @@ and morphisms.
 \begin{description}[style=nextline]
   \item[Objects]     Vertices
   \item[Morphisms]   Edges and self-edges (bidirectional if undirected)
-  \item[Composition] In the ``obvious'' way.
+  \item[Composition] In the ``obvious'' way
 \end{description}
 ** Example: Set
 \begin{description}[style=nextline]
@@ -1155,6 +1162,9 @@ A lot of what we know about values can be lifted to functors.
 ** Lifted Identity
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
+data Identity a
+  = Identity a
+
 data IdentityF f a
   = IdentityF (f a)
 \end{lstlisting}
@@ -1162,6 +1172,9 @@ data IdentityF f a
 ** Lifted Maybe
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
+data Maybe a
+  = Nothing | Just a
+
 data MaybeF f a
   = NothingF a | Just (f a)
 \end{lstlisting}
@@ -1169,6 +1182,9 @@ data MaybeF f a
 ** Lifted Either
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
+data Either e a
+  = Left e | Right a
+
 data EitherF f g a
   = LeftF (f a) | RightF (g a)
 \end{lstlisting}
@@ -1176,6 +1192,9 @@ data EitherF f g a
 ** Lifted Tuple
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
+data Tuple a b
+  = Tuple a b
+
 data TupleF f g a
   = TupleF (f (g a))
 \end{lstlisting}
@@ -1183,9 +1202,13 @@ data TupleF f g a
 ** Lifted List
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
+data List a
+  = Nil
+  | Cons a (List a)
+
 data ListF f a
   = NilF a
-  | ListF (f (ListF f a))
+  | ConsF (f (ListF f a))
 \end{lstlisting}
 #+END_LaTeX
 ** Free Monad
@@ -1209,7 +1232,7 @@ data FreeMonad m a
 :PROPERTIES:
 :BEAMER_env: frame
 :END:
-\fontsize{32}{36}\selectfont
+\fontsize{42}{48}\selectfont
 \[ \textbf{[F]}\ {\tt a} \]
 ** As Context
 :PROPERTIES:
@@ -1246,6 +1269,14 @@ data FreeMonad m a
             (f (Return a))))))
 \end{lstlisting}
 #+END_LaTeX
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+This join, being the free monad, builds up a chain of contexts.  What does
+join mean when we apply some other algebra?  Well, since this is based on the
+laws for monoids, it will multiply, or combine, or collapse contexts to reduce
+back down to a single value, just as mappend does.
 ** Famous quote
 \begin{quotation}
 \noindent ``A monad is just a monoid in the category of endofunctors, what's the
@@ -1442,6 +1473,11 @@ instance Monoid c
 Applicatives allow for expression analysis.
 
 \vspace{2ex}\textbf{Example}: Minimizing expensive key lookups.
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+At this point, walk through the code in src/Query.hs.
 ** Composition
 Another useful trait is that applicatives compose well.
 
@@ -1504,7 +1540,12 @@ join (fmap f m) :: m b
 \end{lstlisting}
 #+END_LaTeX
 ** Not fmap
-Differs from fmap in that a new \texttt{m} was created.
+Bind differs from fmap in that a new \texttt{m} was created.
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+This is obvious when looking at the type of the applied function.
 ** Monad laws
 *** 1. Left identity law                                                           :B_definition:
 :PROPERTIES:
@@ -1555,6 +1596,11 @@ g <=< f  =  \x -> g =<< f x
 :BEAMER_env: definition
 :END:
 \( (f\ \text{\texttt{\small >=>}}\ g)\ \text{\texttt{\small >=>}}\ h \color{red}=\color{black} f\ \text{\texttt{\small >=>}}\ (g\ \text{\texttt{\small >=>}}\ h) \)
+*** note                                                                                 :B_note:
+:PROPERTIES:
+:BEAMER_env: note
+:END:
+This form of the laws clearly shows the connection to monoids.
 ** Chaining
 Monads allow us to chain computations.
 *** \vspace*{-3.5ex}                                                                  :B_example:
@@ -1581,7 +1627,7 @@ do a <- x
 \end{lstlisting}
 #+END_LaTeX
 ** Desugared
-This is just sugar for:
+Which is just sugar for:
 *** \vspace*{-3.5ex}                                                                  :B_example:
 :PROPERTIES:
 :BEAMER_env: example
@@ -1692,7 +1738,7 @@ instance Functor Maybe where
 \end{lstlisting}
 #+END_LaTeX
 ** Maybe
-\texttt{Maybe} gives us a way to short-circuiting a chain of computations.
+\texttt{Maybe} gives us a way of short-circuiting computations.
 ** Either                                                                             :B_example:
 :PROPERTIES:
 :BEAMER_env: example
@@ -1726,7 +1772,7 @@ Tuples form the Writer monad, if we write one more function:
 :END:
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
-tell :: w -> Pair w ()
+tell :: Monoid w => w -> Pair w ()
 tell w = ?
 \end{lstlisting}
 #+END_LaTeX
@@ -1735,6 +1781,20 @@ tell w = ?
 :BEAMER_env: example
 :END:
 Why can't it be a monad?
+*** \vspace*{-3.5ex}                                                                  :B_example:
+:PROPERTIES:
+:BEAMER_env: example
+:END:
+#+BEGIN_LaTeX
+\begin{lstlisting}[language=Haskell]
+data Const c a = Const c
+
+instance Monoid c
+    => Monad (Const c) where
+  return = pure
+  Const c >>= f = ?
+\end{lstlisting}
+#+END_LaTeX
 *** note                                                                                 :B_note:
 :PROPERTIES:
 :BEAMER_env: note
@@ -1755,7 +1815,7 @@ instance Monad ((->) a) where
 \end{lstlisting}
 #+END_LaTeX
 ** State
-\texttt{State} is prototypical of what monads are about.
+\texttt{State} is another classic monad.
 *** \vspace*{-3.5ex}                                                                  :B_example:
 :PROPERTIES:
 :BEAMER_env: example
@@ -1771,19 +1831,19 @@ instance Monad (State s) where
 \end{lstlisting}
 #+END_LaTeX
 ** State
-\texttt{State} is made useful by two more functions, \texttt{put} and
-\texttt{get}.
+\texttt{State} is made useful by two more functions, \texttt{get} and
+\texttt{put}.
 *** \vspace*{-3.5ex}                                                                  :B_example:
 :PROPERTIES:
 :BEAMER_env: example
 :END:
 #+BEGIN_LaTeX
 \begin{lstlisting}[language=Haskell]
-put :: s -> State s ()
-put s = ?
-
 get :: State s s
 get = ?
+
+put :: s -> State s ()
+put s = ?
 \end{lstlisting}
 #+END_LaTeX
 ** Silly example
@@ -1796,8 +1856,7 @@ get = ?
 let f x = when (even x) $ do
         y <- get
         put (x + y)
-in flip execState 0 $
-   mapM_ f [1,2,3,4,5]
+in runS (mapM_ f [1,2,3,4,5]) 0
 \end{lstlisting}
 #+END_LaTeX
 ** Free Monads
