@@ -10,10 +10,10 @@ Abort.
 
 Theorem universal_inv : forall {X}, exists y, forall (x : X), x = y.
 Proof.
-  intros.
+  intros. eapply ex_intro. intros.
 Abort.
 
 Theorem existential_inv : forall {X}, exists y, forall (x : X), x <> y.
 Proof.
-  intros.
+  intros. eapply ex_intro. intros.
 Abort.
