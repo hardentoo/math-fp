@@ -253,29 +253,6 @@ In terms of the types involved:
 :BEAMER_env: note
 :END:
 Assuming of course \( cod(f) = A, cod(g) = B \).
-** Exercise
-\vspace{-2ex}
-*** \vspace*{-3.5ex}                                                                  :B_example:
-:PROPERTIES:
-:BEAMER_env: example
-:END:
-#+BEGIN_LaTeX
-\begin{lstlisting}[language=Haskell]
-data Unit = Unit
-data Maybe a = Nothing | Just a
-\end{lstlisting}
-#+END_LaTeX
-*** Write two functions                                                            :B_alertblock:
-:PROPERTIES:
-:BEAMER_act: <2->
-:BEAMER_env: alertblock
-:END:
-\fontsize{14}{16}\selectfont
-\vspace{-2ex}
-\begin{align*}
-\texttt{toMaybe}   & :: \texttt{Integer}\ →\ \texttt{Maybe\ Unit} \\
-\texttt{fromMaybe} & :: \texttt{Maybe\ Unit}\ →\ \texttt{Integer}
-\end{align*}
 * Laws
 ** HEAD
 :PROPERTIES:
@@ -619,6 +596,79 @@ Prove the following isomorphisms:
                 (a, b) \ ≅  & \ ∀ r, (a → b → r) → r        \\
       \texttt{List}\ a \ ≅  & \ ∀ r, r → (a → r → r) → r
 \end{align*}
+** Computational Identity
+#+BEGIN_LaTeX
+\lstset{basicstyle=\footnotesize\ttfamily}
+\begin{lstlisting}[language=Haskell]
+{-# LANGUAGE RankNTypes #-}
+
+data Identity a = Identity a
+
+fromIdentity :: Identity a
+             -> (a -> r) -> r
+  toIdentity :: (forall r. (a -> r) -> r)
+             -> Identity a
+\end{lstlisting}
+#+END_LaTeX
+** Computational Maybe
+#+BEGIN_LaTeX
+\lstset{basicstyle=\footnotesize\ttfamily}
+\begin{lstlisting}[language=Haskell]
+{-# LANGUAGE RankNTypes #-}
+
+data Maybe a = Nothing | Just a
+
+fromMaybe :: Maybe a
+          -> r -> (a -> r) -> r
+  toMaybe :: (forall r. r -> (a -> r)
+                -> r)
+          -> Maybe a
+\end{lstlisting}
+#+END_LaTeX
+** Computational Either
+#+BEGIN_LaTeX
+\lstset{basicstyle=\footnotesize\ttfamily}
+\begin{lstlisting}[language=Haskell]
+{-# LANGUAGE RankNTypes #-}
+
+data Either a b = Left a | Right b
+
+fromEither :: Either a b
+           -> (a -> r) -> (b -> r) -> r
+  toEither :: (forall r.
+                 (a -> r) -> (b -> r)
+                 -> r)
+           -> Identity a
+\end{lstlisting}
+#+END_LaTeX
+** Computational Tuple
+#+BEGIN_LaTeX
+\lstset{basicstyle=\footnotesize\ttfamily}
+\begin{lstlisting}[language=Haskell]
+{-# LANGUAGE RankNTypes #-}
+
+fromTuple :: (a, b)
+          -> (a -> b -> r) -> r
+  toTuple :: (forall r. (a -> b -> r)
+                -> r)
+          -> (a, b)
+\end{lstlisting}
+#+END_LaTeX
+** Computational List
+#+BEGIN_LaTeX
+\lstset{basicstyle=\footnotesize\ttfamily}
+\begin{lstlisting}[language=Haskell]
+{-# LANGUAGE RankNTypes #-}
+
+data List a = Nil | Cons a (List a)
+
+fromList :: List a
+         -> r -> (a -> r -> r) -> r
+  toList :: (forall r. r -> (a -> r -> r)
+               -> r)
+         -> List a
+\end{lstlisting}
+#+END_LaTeX
 ** Exercise
 Easy:
 - Write \texttt{head} for both forms of list.

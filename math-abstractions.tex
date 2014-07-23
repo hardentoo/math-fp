@@ -1,4 +1,4 @@
-% Created 2014-07-21 Mon 22:44
+% Created 2014-07-22 Tue 16:34
 \documentclass[utf8x,notes,17pt]{beamer}
 \usepackage[T1]{fontenc}
 \usepackage{fixltx2e}
@@ -273,23 +273,6 @@ In terms of the types involved:
 \[ f : B → A \]
 \note{note
 Assuming of course \( cod(f) = A, cod(g) = B \).}
-\end{frame}
-\begin{frame}[fragile,label=sec-4-17]{Exercise}
-\vspace{-2ex}
-\begin{example}[\vspace*{-3.5ex}]
-\begin{lstlisting}[language=Haskell]
-data Unit = Unit
-data Maybe a = Nothing | Just a
-\end{lstlisting}
-\end{example}
-\begin{alertblock}<2->{Write two functions}
-\fontsize{14}{16}\selectfont
-\vspace{-2ex}
-\begin{align*}
-\texttt{toMaybe}   & :: \texttt{Integer}\ →\ \texttt{Maybe\ Unit} \\
-\texttt{fromMaybe} & :: \texttt{Maybe\ Unit}\ →\ \texttt{Integer}
-\end{align*}
-\end{alertblock}
 \end{frame}
 \section{Laws}
 \label{sec-5}
@@ -604,7 +587,75 @@ Prove the following isomorphisms:
       \texttt{List}\ a \ ≅  & \ ∀ r, r → (a → r → r) → r
 \end{align*}
 \end{frame}
-\begin{frame}[fragile,label=sec-7-30]{Exercise}
+\begin{frame}[fragile,label=sec-7-30]{Computational Identity}
+\lstset{basicstyle=\footnotesize\ttfamily}
+\begin{lstlisting}[language=Haskell]
+{-# LANGUAGE RankNTypes #-}
+
+data Identity a = Identity a
+
+fromIdentity :: Identity a
+             -> (a -> r) -> r
+  toIdentity :: (forall r. (a -> r) -> r)
+             -> Identity a
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile,label=sec-7-31]{Computational Maybe}
+\lstset{basicstyle=\footnotesize\ttfamily}
+\begin{lstlisting}[language=Haskell]
+{-# LANGUAGE RankNTypes #-}
+
+data Maybe a = Nothing | Just a
+
+fromMaybe :: Maybe a
+          -> r -> (a -> r) -> r
+  toMaybe :: (forall r. r -> (a -> r)
+                -> r)
+          -> Maybe a
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile,label=sec-7-32]{Computational Either}
+\lstset{basicstyle=\footnotesize\ttfamily}
+\begin{lstlisting}[language=Haskell]
+{-# LANGUAGE RankNTypes #-}
+
+data Either a b = Left a | Right b
+
+fromEither :: Either a b
+           -> (a -> r) -> (b -> r) -> r
+  toEither :: (forall r.
+                 (a -> r) -> (b -> r)
+                 -> r)
+           -> Identity a
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile,label=sec-7-33]{Computational Tuple}
+\lstset{basicstyle=\footnotesize\ttfamily}
+\begin{lstlisting}[language=Haskell]
+{-# LANGUAGE RankNTypes #-}
+
+fromTuple :: (a, b)
+          -> (a -> b -> r) -> r
+  toTuple :: (forall r. (a -> b -> r)
+                -> r)
+          -> (a, b)
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile,label=sec-7-34]{Computational List}
+\lstset{basicstyle=\footnotesize\ttfamily}
+\begin{lstlisting}[language=Haskell]
+{-# LANGUAGE RankNTypes #-}
+
+data List a = Nil | Cons a (List a)
+
+fromList :: List a
+         -> r -> (a -> r -> r) -> r
+  toList :: (forall r. r -> (a -> r -> r)
+               -> r)
+         -> List a
+\end{lstlisting}
+\end{frame}
+\begin{frame}[fragile,label=sec-7-35]{Exercise}
 Easy:
 \begin{itemize}
 \item Write \texttt{head} for both forms of list.
@@ -623,7 +674,7 @@ Hard:
     tail :: [a] -> [a]
 \end{lstlisting}
 \end{frame}
-\begin{frame}[fragile,label=sec-7-31]{Types are algebras too}
+\begin{frame}[fragile,label=sec-7-36]{Types are algebras too}
 \vspace{-2ex}
 \begin{align*}
 a + b &= \texttt{Either}\ a\ b                   \\
@@ -638,7 +689,7 @@ b^{a} &= a → b                                   \\
 Why is this good?  Because you can apply algebraic manipulations to types to
 derive other types.}
 \end{frame}
-\begin{frame}[fragile,label=sec-7-32]{Which algebra is it?}
+\begin{frame}[fragile,label=sec-7-37]{Which algebra is it?}
 A \alert{near-semiring} structure over the set $S$ of types.
 
 \begin{enumerate}
@@ -648,7 +699,7 @@ A \alert{near-semiring} structure over the set $S$ of types.
 \item $∀ a ∈ S, 0 * a = 0$
 \end{enumerate}
 \end{frame}
-\begin{frame}[fragile,label=sec-7-33]{Example: currying}
+\begin{frame}[fragile,label=sec-7-38]{Example: currying}
 \[ (c^{b})^{a} = c^{b a} \]
 
 \vspace{1ex}
@@ -658,7 +709,7 @@ A \alert{near-semiring} structure over the set $S$ of types.
 \end{lstlisting}
 \end{center}
 \end{frame}
-\begin{frame}[fragile,label=sec-7-34]{Example: lists}
+\begin{frame}[fragile,label=sec-7-39]{Example: lists}
 \vspace{-2ex}
 \begin{align*}
 L(a) &= 1 + a ∙ L(a)                                      \\
@@ -669,7 +720,7 @@ L(a) &= 1 + a ∙ L(a)                                      \\
      &= 1 + a + a^{2} + a^{3} + a^{4} + a^{5} + \cdots{}
 \end{align*}
 \end{frame}
-\begin{frame}[fragile,label=sec-7-35]{Example: lists}
+\begin{frame}[fragile,label=sec-7-40]{Example: lists}
 \vspace{-2ex}
 \begin{align*}
 CL(a) &= ∀ r, r → (a → r → r) → r     \\
